@@ -1,0 +1,53 @@
+plugins {
+    id 'java'
+    id("io.qameta.allure") version "3.2.0"
+}
+
+group = 'ru.mvaft'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation (
+            'org.junit.jupiter:junit-jupiter:5.10.0',
+            'com.codeborne:selenide:7.16.0',
+            'io.qameta.allure:allure-junit5:2.27.0',
+            'io.qameta.allure:allure-selenide:2.34.0'
+    )
+    testImplementation ('org.junit.platform:junit-platform-suite:1.11.0')
+    testImplementation("org.assertj:assertj-core:4.0.0-M1")
+}
+
+allure {
+    version = '2.27.0'
+    adapter {
+        allureJavaVersion = '2.27.0'
+        aspectjWeaver = true
+        autoconfigureListeners = true
+        frameworks {
+            junit5 {
+                adapterVersion = '2.27.0'
+                enabled = true
+            }
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.withType(JavaExec) {
+    systemProperty "file.encoding", "UTF-8"
+}
+
+tasks.withType(Test) {
+    systemProperty "file.encoding", "UTF-8"
+}
+
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
+
