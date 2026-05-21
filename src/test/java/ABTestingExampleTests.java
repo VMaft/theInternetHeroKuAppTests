@@ -19,8 +19,8 @@ public class ABTestingExampleTests extends TheInternetHeroKuAppConfiguration {
     @DisplayName("Пользователь может перейти по ссылке \"A/B Testing\"")
     void userCanClickONABTestingLink() {
         open(BASE_URL);
-        $(linkText("A/B Testing")).shouldBe(visible);
-        $(linkText("A/B Testing")).click();
+        abTestingPageLocator.shouldBe(visible);
+        abTestingPageLocator.click();
         $(".example").shouldBe(visible)
                 .shouldHave(text("Also known as split testing."));
     }
@@ -30,7 +30,7 @@ public class ABTestingExampleTests extends TheInternetHeroKuAppConfiguration {
     @DisplayName("Проверяем заголовок соответствует одному из значений")
     public void abTestsPageCanBeOpenedAndContainsOneOfStringInTheHeaders() {
         open(BASE_URL);
-        $(linkText("A/B Testing")).click();
+        abTestingPageLocator.click();
         $(".example h3").shouldHave(oneOfTexts(abTestsHeadersStrings));
         System.out.printf("Текущий заголовок: '%s'\n\r", $(".example h3").text());
     }
