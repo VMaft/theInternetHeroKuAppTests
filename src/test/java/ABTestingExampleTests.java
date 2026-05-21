@@ -1,3 +1,4 @@
+import com.codeborne.selenide.Configuration;
 import configuration.TheInternetHeroKuAppConfiguration;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;

@@ -10,7 +10,7 @@ import static org.openqa.selenium.By.linkText;
 public class TheInternetHeroKuAppConfiguration {
     @BeforeAll
     static void beforeAll() {
-        String selenoidUrl = System.getProperty("selenoid.url", "http://localhost:4444/wd/hub");
+        String selenoidUrl = System.getProperty("selenoid.url", "http://selenoid:4444/wd/hub");
         String browser = System.getProperty("browser", "chrome");
 
         Configuration.remote = selenoidUrl;
@@ -19,10 +19,10 @@ public class TheInternetHeroKuAppConfiguration {
         Configuration.browserSize = "1920x1080";
     }
     //Оригинальная ссылка для переключения в случае работоспособности
-    //public final String BASE_URL = "https://the-internet.herokuapp.com/";
+    public final String BASE_URL = "https://the-internet.herokuapp.com/";
 
     //Локально поднятый в Docker TheInternetHeroKuApp
-    public final String BASE_URL = "http://localhost:7080";
+    //public final String BASE_URL = "http://localhost:7080";
 
     //Данные:
     public final String[] abTestsHeadersStrings = {"A/B Test Control", "A/B Test Variation 1", "\uD83E\uDD2A A/B Test Variation 2 — CHAOS MODE \uD83E\uDD2A"};
