@@ -7,5 +7,6 @@ public class AddElementsExampleTests extends TheInternetHeroKuAppConfiguration {
     @Test
     @DisplayName("Пользователь может перейти на страницу поиска")
     void userCanVisitThePage() {
+
     }
 }
