@@ -38,6 +38,7 @@ allure {
 
 test {
     useJUnitPlatform()
+    systemProperty "allure.results.directory", "build/allure-results"
 }
 
 tasks.withType(JavaExec) {
