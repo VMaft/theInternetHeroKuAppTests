@@ -127,7 +127,7 @@ public class ABTestingExampleTests extends TheInternetHeroKuAppConfiguration {
     @DisplayName("Вариант страницы ")
     @ParameterizedTest(name = "{0} открыт и содержит заголовок {1}.")
     @CsvSource({
-            "abtest_cookies, A/B Test Cookies",
+            "abtest_cookies, A/B Test Cookieses",
             "abtest_manual, A/B Test Manual"
     })
     void abTestsPagesCanBeDirectlyOpened(String pagePath, String headerName) {
