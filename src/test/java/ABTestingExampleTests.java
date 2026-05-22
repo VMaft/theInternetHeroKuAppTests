@@ -32,11 +32,11 @@ public class ABTestingExampleTests extends TheInternetHeroKuAppConfiguration {
     void setUp() {
         SelenideLogger.addListener("AllureListener", new AllureSelenide());
     }
-//
-//    @AfterEach
-//    void tearDown() {
-//        attachments.takeScreenShot();
-//    }
+
+    @AfterEach
+    void tearDown() {
+        attachments.takeScreenShot();
+    }
 
     @Feature("Раздел A/B Testing")
     @Story("Тестирование вариантов A/B требуемой страницы.")
@@ -127,7 +127,7 @@ public class ABTestingExampleTests extends TheInternetHeroKuAppConfiguration {
     @DisplayName("Вариант страницы ")
     @ParameterizedTest(name = "{0} открыт и содержит заголовок {1}.")
     @CsvSource({
-            "abtest_cookies, A/B Test Cookieses",
+            "abtest_cookies, A/B Test Cookies",
             "abtest_manual, A/B Test Manual"
     })
     void abTestsPagesCanBeDirectlyOpened(String pagePath, String headerName) {
