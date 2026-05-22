@@ -32,11 +32,11 @@ public class ABTestingExampleTests extends TheInternetHeroKuAppConfiguration {
     void setUp() {
         SelenideLogger.addListener("AllureListener", new AllureSelenide());
     }
-//
-//    @AfterEach
-//    void tearDown() {
-//        attachments.takeScreenShot();
-//    }
+
+    @AfterEach
+    void tearDown() {
+        attachments.takeScreenShot();
+    }
 
     @Feature("Раздел A/B Testing")
     @Story("Тестирование вариантов A/B требуемой страницы.")
