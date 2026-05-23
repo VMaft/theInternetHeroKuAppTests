@@ -12,21 +12,32 @@ import static org.openqa.selenium.By.linkText;
 public class TheInternetHeroKuAppConfiguration {
     @BeforeAll
     static void beforeAll() {
+        System.out.println("##teamcity[blockOpened name='Reading configuration file.']");
+
         String selenoidRemote = System.getenv("SELENOID_REMOTE");
+        System.out.println("##teamcity[message text='Selenoid URL: " + selenoidRemote + "' status='NORMAL']");
+
         String selenideBrowser = System.getenv("SELENIDE_BROWSER");
+        System.out.println("##teamcity[message text='Browser: " + selenideBrowser + "' status='NORMAL']");
+
 
         if(selenoidRemote == null){
-            System.out.println("WARNING: Environment variable 'SELENOID_REMOTE' is null or empty.");
-            System.out.println("Getting property from call parameters by key: 'selenoid.url'.");
+            //##teamcity[message text='Too many llamas!' status='WARNING']
+            System.out.println("##teamcity[message text='Environment variable 'SELENOID_REMOTE' is null or empty.' status='WARNING']");
+
             selenoidRemote = System.getProperty("selenoid.url");
+            System.out.println("##teamcity[message text='Getting Selenoid.URL from commandline calling parameters. Value: " + selenoidRemote + "' status='NORMAL']");
         }
         if(selenideBrowser == null){
-            System.out.println("WARNING: Environment variable 'SELENIDE_BROWSER' is null or empty.");
-            System.out.println("Getting property from call parameters by key: 'browser'.");
-            selenoidRemote = System.getProperty("browser");
+            System.out.println("##teamcity[message text='WARNING: Environment variable 'SELENIDE_BROWSER' is null or empty.' status='WARNING']");
+
+            selenideBrowser = System.getProperty("browser");
+            System.out.println("##teamcity[message text='Get BROWSER from commandline calling parameters. Value: " + selenideBrowser + "' status='NORMAL']");
         }
 
         if(selenoidRemote != null && selenideBrowser != null){
+            System.out.println("##teamcity[message text='Attention: Using remote Selenoid' status='WARNING']");
+
             Configuration.remote = selenoidRemote;
             Configuration.browser = selenideBrowser;
 
@@ -43,6 +54,9 @@ public class TheInternetHeroKuAppConfiguration {
                     """);
         }
         Configuration.browserSize = "1920x1080";
+        System.out.println("##teamcity[message text='Set configuration.browserSize = \"1920x1080\"' status='NORMAL']");
+
+        System.out.println("##teamcity[blockClosed name='Reading configuration file.']");
     }
 
     //Оригинальная ссылка для переключения в случае работоспособности
