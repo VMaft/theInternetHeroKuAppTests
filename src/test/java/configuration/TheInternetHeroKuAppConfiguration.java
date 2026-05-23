@@ -12,21 +12,33 @@ import static org.openqa.selenium.By.linkText;
 public class TheInternetHeroKuAppConfiguration {
     @BeforeAll
     static void beforeAll() {
-        String selenoidUrl = System.getProperty("selenoid.url", "http://selenoid:4444/wd/hub");
-        String browser = System.getProperty("browser", "chrome");
+        boolean isCI = Boolean.parseBoolean(System.getProperty("ci","false"));
 
-        Configuration.remote = selenoidUrl;
-        Configuration.browser = browser;
+        if(isCI){
+            String selenoidUrl = System.getProperty("selenoid.url", "http://selenoid:4444/wd/hub");
+            String browser = System.getProperty("browser", "chrome");
 
+            Configuration.remote = selenoidUrl;
+            Configuration.browser = browser;
+
+            System.out.println("Starting tests from CI");
+        } else{
+            Configuration.browser = "chrome";
+        }
         Configuration.browserSize = "1920x1080";
     }
 
     //Оригинальная ссылка для переключения в случае работоспособности
     public final String BASE_URL = "https://the-internet.herokuapp.com/";
 
-//Локально поднятый в Docker TheInternetHeroKuApp
-//public final String BASE_URL = "http://localhost:7080";
+    //Локально поднятый в Docker TheInternetHeroKuApp
+    //public final String BASE_URL = "http://localhost:7080";
 
-    public final String[] abTestsHeadersStrings = {"A/B Test Control", "A/B Test Variation 1", "\uD83E\uDD2A A/B Test Variation 2 — CHAOS MODE \uD83E\uDD2A"};
+    public final String[] abTestsHeadersStrings = {
+            "A/B Test Control",
+            "A/B Test Variation 1",
+            "\uD83E\uDD2A A/B Test Variation 2 — CHAOS MODE \uD83E\uDD2A"
+    };
+
     public final SelenideElement abTestingPageLocator = $(linkText("A/B Testing"));
 }
