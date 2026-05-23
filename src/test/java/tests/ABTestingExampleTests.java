@@ -1,3 +1,5 @@
+package tests;
+
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import configuration.Attachments;
@@ -19,6 +21,7 @@ public class ABTestingExampleTests extends TheInternetHeroKuAppConfiguration {
 
     Attachments attachments = new Attachments();
 
+
     @BeforeEach
     void setUp() {
         SelenideLogger.addListener("AllureListener", new AllureSelenide());
@@ -34,9 +37,7 @@ public class ABTestingExampleTests extends TheInternetHeroKuAppConfiguration {
     @Test
     @DisplayName("Пользователь может перейти по ссылке \"A/B Testing\"")
     void userCanClickOnABTestingLink() {
-        step("Открываем The Internet", () -> {
-            open(BASE_URL);
-        });
+        step("Открываем The Internet", () -> open(BASE_URL));
         step("Проверяем что раздел 'A/B Testing' доступен", () -> {
             abTestingPageLocator.shouldBe(visible);
         });
@@ -53,18 +54,12 @@ public class ABTestingExampleTests extends TheInternetHeroKuAppConfiguration {
     @DisplayName("Проверка динамической смены заголовка у страницы со сбросом cookies.")
     @RepeatedTest(15)
     public void abTestsPageDisplayedDifferentVariationOfHeadersByClearingCookies() {
-        step("Открываем The Internet", () -> {
-            open(BASE_URL);
-        });
-        step("Переходим в раздел 'A/B Testing'", () -> {
-            abTestingPageLocator.click();
-        });
+        step("Открываем The Internet", () -> open(BASE_URL));
+        step("Переходим в раздел 'A/B Testing'", () -> abTestingPageLocator.click());
         step("Проверяем что страница является допустимым вариантом (A || B)", () -> {
             $(".example h3").shouldHave(oneOfTexts(abTestsHeadersStrings));
         });
-        step("Выводим информацию о заголовоке", () -> {
-            addAttachment("Заголовк страницы: ", "text/plain", $(".example h3").text());
-        });
+        step("Выводим информацию о заголовоке", () -> addAttachment("Заголовк страницы: ", "text/plain", $(".example h3").text()));
         step("Чистим cookie браузера", Selenide::clearBrowserCookies);
         attachments.takeScreenShot();
     }
@@ -74,18 +69,12 @@ public class ABTestingExampleTests extends TheInternetHeroKuAppConfiguration {
     @RepeatedTest(3)
     @DisplayName("Проверка статичного отображения текста и заголовка страницы без сброса cookies")
     public void abTestsPageDisplayedStaticControlVersion() {
-        step("Открываем The Internet", () -> {
-            open(BASE_URL);
-        });
-        step("Переходим в раздел 'A/B Testing'", () -> {
-            abTestingPageLocator.click();
-        });
+        step("Открываем The Internet", () -> open(BASE_URL));
+        step("Переходим в раздел 'A/B Testing'", () -> abTestingPageLocator.click());
         step("Проверяем что страница является допустимым вариантом (A || B)", () -> {
             $(".example h3").shouldHave(oneOfTexts(abTestsHeadersStrings));
         });
-        step("Сохраняем информацию из заголовока страницы", () -> {
-            addAttachment("Вариант страницы: ", "text/plain", $(".example h3").text());
-        });
+        step("Сохраняем информацию из заголовока страницы", () -> addAttachment("Вариант страницы: ", "text/plain", $(".example h3").text()));
         step("Чистим cookie браузера", Selenide::clearBrowserCookies);
         attachments.takeScreenShot();
     }
@@ -102,9 +91,7 @@ public class ABTestingExampleTests extends TheInternetHeroKuAppConfiguration {
             "abtest_variation_2, \uD83E\uDD2A A/B Test Variation 2 — CHAOS MODE \uD83E\uDD2A",
     })
     void someFunVariationOfABTestsCanBeDirectlyOpened(String pagePath, String headerName) {
-        step("Открываем страницу с вариантом по URL", () -> {
-            open(BASE_URL + "/" + pagePath);
-        });
+        step("Открываем страницу с вариантом по URL", () -> open(BASE_URL + "/" + pagePath));
         step("Проверяем что страница '" + pagePath
                 + "' отборажает заголовок '" + headerName + "'", () -> {
             $(".example h3").shouldBe(visible);
@@ -122,9 +109,7 @@ public class ABTestingExampleTests extends TheInternetHeroKuAppConfiguration {
             "abtest_manual, A/B Test Manual"
     })
     void abTestsPagesCanBeDirectlyOpened(String pagePath, String headerName) {
-        step("Открываем страницу с вариантом по URL", () -> {
-            open(BASE_URL + "/" + pagePath);
-        });
+        step("Открываем страницу с вариантом по URL", () -> open(BASE_URL + "/" + pagePath));
         step("Проверяем что страница '" + pagePath
                 + "' отборажает заголовок '" + headerName + "'", () -> {
             $(".example h3").shouldBe(visible);
