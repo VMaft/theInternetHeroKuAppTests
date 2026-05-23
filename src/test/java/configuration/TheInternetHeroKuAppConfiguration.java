@@ -15,11 +15,8 @@ public class TheInternetHeroKuAppConfiguration {
         boolean isCI = Boolean.parseBoolean(System.getProperty("ci","false"));
 
         if(isCI){
-            String selenoidUrl = System.getProperty("selenoid.url", "http://selenoid:4444/wd/hub");
-            String browser = System.getProperty("browser", "chrome");
-
-            Configuration.remote = selenoidUrl;
-            Configuration.browser = browser;
+            Configuration.remote = "http://selenoid:4444/wd/hub";
+            Configuration.browser = "chrome";
 
             System.out.println("Starting tests from CI");
         } else{
