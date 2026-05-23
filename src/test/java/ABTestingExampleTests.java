@@ -1,27 +1,18 @@
 import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.SelenideDriver;
-import com.codeborne.selenide.WebDriverRunner;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import configuration.Attachments;
 import configuration.TheInternetHeroKuAppConfiguration;
 
-import io.qameta.allure.Allure;
-import io.qameta.allure.Attachment;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 import static io.qameta.allure.Allure.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.InstanceOfAssertFactories.set;
 
 @DisplayName("Проверки раздела A/B Testing")
 public class ABTestingExampleTests extends TheInternetHeroKuAppConfiguration {

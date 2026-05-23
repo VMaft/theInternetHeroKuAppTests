@@ -2,8 +2,6 @@ package configuration;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.logevents.SelenideLogger;
-import io.qameta.allure.junit5.AllureJunit5;
 import org.junit.jupiter.api.*;
 
 import static com.codeborne.selenide.Selenide.$;
@@ -15,46 +13,46 @@ public class TheInternetHeroKuAppConfiguration {
         System.out.println("##teamcity[blockOpened name='Reading configuration file.']");
 
         String selenoidRemote = System.getenv("SELENOID_REMOTE");
-        System.out.println("Selenoid URL: " + selenoidRemote);
+        System.out.println("##teamcity[message text='Selenoid URL: " + selenoidRemote + "' status='NORMAL']");
 
         String selenideBrowser = System.getenv("SELENIDE_BROWSER");
-        System.out.println("Browser: " + selenideBrowser);
+        System.out.println("##teamcity[message text='Browser: " + selenideBrowser + "' status='NORMAL']");
 
         if(selenoidRemote == null){
-            //Too many llamas!
-            System.out.println("Environment variable 'SELENOID_REMOTE' is null or empty.");
+            //##teamcity[message text='Too many llamas!' status='WARNING']
+            System.out.println("##teamcity[message text='Environment variable 'SELENOID_REMOTE' is null or empty.' status='WARNING']");
 
             selenoidRemote = System.getProperty("selenoid.url");
-            System.out.println("Getting Selenoid.URL from commandline calling parameters. Value: " + selenoidRemote);
+            System.out.println("##teamcity[message text='Getting Selenoid.URL from commandline calling parameters. Value: " + selenoidRemote + "' status='NORMAL']");
         }
         if(selenideBrowser == null){
-            System.out.println("WARNING: Environment variable 'SELENIDE_BROWSER' is null or empty.");
+            System.out.println("##teamcity[message text='WARNING: Environment variable 'SELENIDE_BROWSER' is null or empty.' status='WARNING']");
 
             selenideBrowser = System.getProperty("browser");
-            System.out.println("Get BROWSER from commandline calling parameters. Value: " + selenideBrowser);
+            System.out.println("##teamcity[message text='Get BROWSER from commandline calling parameters. Value: " + selenideBrowser + "' status='NORMAL']");
         }
 
         if(selenoidRemote != null && selenideBrowser != null){
-            System.out.println("Attention: Using remote Selenoid");
+            System.out.println("##teamcity[message text='Attention: Using remote Selenoid' status='WARNING']");
 
             Configuration.remote = selenoidRemote;
             Configuration.browser = selenideBrowser;
 
             System.out.println("""
                    \s
-                    ========== Running in CI ==========\s
+                    ==========Running in CI==========\s
                     With remote:
                    \s
                   \s""" + selenoidRemote);
         } else{
             Configuration.browser = "chrome";
-
             System.out.println("""
-                    ========== Running locally ==========
+                    ==========Running locally==========
                     """);
         }
         Configuration.browserSize = "1920x1080";
-        System.out.println("Set configuration.browserSize = \"1920x1080\"");
+        System.out.println("##teamcity[message text='Set configuration.browserSize = \"1920x1080\"' status='NORMAL']");
+
         System.out.println("##teamcity[blockClosed name='Reading configuration file.']");
     }
 
