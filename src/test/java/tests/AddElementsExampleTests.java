@@ -1,3 +1,5 @@
+package tests;
+
 import com.codeborne.selenide.Selenide;
 import configuration.Attachments;
 import configuration.TheInternetHeroKuAppConfiguration;
