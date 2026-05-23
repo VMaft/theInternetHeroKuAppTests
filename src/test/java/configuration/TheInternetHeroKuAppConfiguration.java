@@ -12,15 +12,35 @@ import static org.openqa.selenium.By.linkText;
 public class TheInternetHeroKuAppConfiguration {
     @BeforeAll
     static void beforeAll() {
-        boolean isCI = Boolean.parseBoolean(System.getProperty("ci","false"));
+        String selenoidRemote = System.getenv("SELENOID_REMOTE");
+        String selenideBrowser = System.getenv("SELENIDE_BROWSER");
 
-        if(isCI){
-            Configuration.remote = "http://selenoid:4444/wd/hub";
-            Configuration.browser = "chrome";
+        if(selenoidRemote == null){
+            System.out.println("WARNING: Environment variable 'SELENOID_REMOTE' is null or empty.");
+            System.out.println("Getting property from call parameters by key: 'selenoid.url'.");
+            selenoidRemote = System.getProperty("selenoid.url");
+        }
+        if(selenideBrowser == null){
+            System.out.println("WARNING: Environment variable 'SELENIDE_BROWSER' is null or empty.");
+            System.out.println("Getting property from call parameters by key: 'browser'.");
+            selenoidRemote = System.getProperty("browser");
+        }
 
-            System.out.println("Starting tests from CI");
+        if(selenoidRemote != null && selenideBrowser != null){
+            Configuration.remote = selenoidRemote;
+            Configuration.browser = selenideBrowser;
+
+            System.out.println("""
+                   \s
+                    ==========Running in CI==========\s
+                    With remote:
+                   \s
+                  \s""" + selenoidRemote);
         } else{
             Configuration.browser = "chrome";
+            System.out.println("""
+                    ==========Running locally==========
+                    """);
         }
         Configuration.browserSize = "1920x1080";
     }
