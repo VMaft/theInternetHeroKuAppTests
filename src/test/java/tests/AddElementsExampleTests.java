@@ -1,18 +1,21 @@
 package tests;
 
 import com.codeborne.selenide.Selenide;
-import configuration.Attachments;
+import utils.Attachments;
 import configuration.TheInternetHeroKuAppConfiguration;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("Проверки раздела Add/Remove Elements")
 public class AddElementsExampleTests extends TheInternetHeroKuAppConfiguration {
 
     @Test
-    @DisplayName("Пользователь может перейти на страницу поиска")
-    void userCanVisitThePage() {
+    @DisplayName("Раздел Add/Remove Elements доступен ")
+    void elemntsOfAddAndRemoveElementExamplesIsEnabled() {
         Selenide.open(BASE_URL);
-        System.out.println("Приветик!");
-        new Attachments().takeScreenShot();
+
+        Attachments.takeScreenShot();
     }
+
+
 }
