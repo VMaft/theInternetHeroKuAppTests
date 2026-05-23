@@ -21,15 +21,9 @@ public class ABTestingExampleTests extends TheInternetHeroKuAppConfiguration {
 
     Attachments attachments = new Attachments();
 
-
     @BeforeEach
     void setUp() {
         SelenideLogger.addListener("AllureListener", new AllureSelenide());
-    }
-
-    @AfterEach
-    void tearDown() {
-        attachments.takeScreenShot();
     }
 
     @Feature("Раздел A/B Testing")
