@@ -2,8 +2,8 @@ package tests;
 
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.logevents.SelenideLogger;
+import tests.helpers.ABTestingExampleTestsComponents;
 import utils.Attachments;
-import configuration.TheInternetHeroKuAppConfiguration;
 
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
@@ -17,7 +17,7 @@ import static com.codeborne.selenide.Selenide.*;
 import static io.qameta.allure.Allure.*;
 
 @DisplayName("Проверки раздела A/B Testing")
-public class ABTestingExampleTests extends TheInternetHeroKuAppConfiguration {
+public class ABTestingExampleTests extends ABTestingExampleTestsComponents {
 
     @BeforeEach
     void setUp() {
