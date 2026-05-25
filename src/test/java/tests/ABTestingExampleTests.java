@@ -2,7 +2,7 @@ package tests;
 
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.logevents.SelenideLogger;
-import configuration.Attachments;
+import utils.Attachments;
 import configuration.TheInternetHeroKuAppConfiguration;
 
 import io.qameta.allure.Feature;
@@ -18,8 +18,6 @@ import static io.qameta.allure.Allure.*;
 
 @DisplayName("Проверки раздела A/B Testing")
 public class ABTestingExampleTests extends TheInternetHeroKuAppConfiguration {
-
-    Attachments attachments = new Attachments();
 
     @BeforeEach
     void setUp() {
@@ -40,7 +38,7 @@ public class ABTestingExampleTests extends TheInternetHeroKuAppConfiguration {
             $(".example").shouldBe(visible)
                     .shouldHave(text("Also known as split testing."));
         });
-        attachments.takeScreenShot();
+        Attachments.takeScreenShot();
     }
 
     @Feature("Раздел A/B Testing")
@@ -55,7 +53,7 @@ public class ABTestingExampleTests extends TheInternetHeroKuAppConfiguration {
         });
         step("Выводим информацию о заголовоке", () -> addAttachment("Заголовк страницы: ", "text/plain", $(".example h3").text()));
         step("Чистим cookie браузера", Selenide::clearBrowserCookies);
-        attachments.takeScreenShot();
+        Attachments.takeScreenShot();
     }
 
     @Feature("Раздел A/B Testing")
@@ -70,7 +68,7 @@ public class ABTestingExampleTests extends TheInternetHeroKuAppConfiguration {
         });
         step("Сохраняем информацию из заголовока страницы", () -> addAttachment("Вариант страницы: ", "text/plain", $(".example h3").text()));
         step("Чистим cookie браузера", Selenide::clearBrowserCookies);
-        attachments.takeScreenShot();
+        Attachments.takeScreenShot();
     }
 
     @Disabled("Тест отключен из-за того что на странице the-internet.herokuapp.com отсутствует реализация вариантов 1 и 2, в отличие от локальной сборки.")
@@ -91,7 +89,7 @@ public class ABTestingExampleTests extends TheInternetHeroKuAppConfiguration {
             $(".example h3").shouldBe(visible);
             $(".example h3").shouldHave(text(headerName));
         });
-        attachments.takeScreenShot();
+        Attachments.takeScreenShot();
     }
 
     @Feature("Раздел A/B Testing")
@@ -109,6 +107,6 @@ public class ABTestingExampleTests extends TheInternetHeroKuAppConfiguration {
             $(".example h3").shouldBe(visible);
             $(".example h3").shouldHave(text(headerName));
         });
-        attachments.takeScreenShot();
+        Attachments.takeScreenShot();
     }
 }
