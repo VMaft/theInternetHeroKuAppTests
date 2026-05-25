@@ -3,6 +3,7 @@ package configuration;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.SelenideElement;
 import org.junit.jupiter.api.*;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 import static com.codeborne.selenide.Selenide.$;
 import static org.openqa.selenium.By.linkText;
@@ -44,6 +45,15 @@ public class TheInternetHeroKuAppConfiguration {
                     With remote:
                    \s
                   \s""" + selenoidRemote);
+            System.out.println("##teamcity[blockClosed name='Reading configuration file.']");
+
+            DesiredCapabilities capabilities = new DesiredCapabilities();
+            capabilities.setCapability("enableVNC", true);
+            System.out.println("##teamcity[message text='Attention: Using enableVNC' status='WARNING']");
+            capabilities.setCapability("enableVideo", true);
+            System.out.println("##teamcity[message text='Attention: Using enableVideo' status='WARNING']");
+
+            Configuration.browserCapabilities = capabilities;
         } else{
             Configuration.browser = "chrome";
             System.out.println("""
@@ -52,12 +62,10 @@ public class TheInternetHeroKuAppConfiguration {
         }
         Configuration.browserSize = "1920x1080";
         System.out.println("##teamcity[message text='Set configuration.browserSize = \"1920x1080\"' status='NORMAL']");
-
-        System.out.println("##teamcity[blockClosed name='Reading configuration file.']");
     }
 
     //Оригинальная ссылка для переключения в случае работоспособности
-    public final String BASE_URL = "https://the-internet.herokuapp.com/";
+    public static final String BASE_URL = "https://the-internet.herokuapp.com/";
 
     //Локально поднятый в Docker TheInternetHeroKuApp
     //public final String BASE_URL = "http://localhost:7080";
