@@ -19,8 +19,8 @@ public class Attachments extends TheInternetHeroKuAppConfiguration {
 
     @Attachment(value = "Видео выполнения теста", type = "text/html", fileExtension = ".html")
     public static String attachVideoAsHtmlLink(String sessionId) {
-        String selenoidUrl = System.getenv("SELENOID_URL");
-        System.out.println("------------- DEBUG: selenoidUrl: " + selenoidUrl);
+        String selenoidVideoUrl = System.getenv("SELENOID_VIDEO");
+        System.out.println("------------- DEBUG: selenoidUrl: " + selenoidVideoUrl);
         System.out.println("------------- DEBUG: sessionId: " + sessionId);
         return String.format("""
         <html>
@@ -30,7 +30,7 @@ public class Attachments extends TheInternetHeroKuAppConfiguration {
                 </video>
             </body>
         </html>
-        """, selenoidUrl, sessionId);
+        """, selenoidVideoUrl, sessionId);
     }
 
     public static void downloadAndAttachVideoFromSelenoid() {
