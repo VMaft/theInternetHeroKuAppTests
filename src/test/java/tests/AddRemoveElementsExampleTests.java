@@ -4,12 +4,9 @@ import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.*;
 import io.qameta.allure.selenide.AllureSelenide;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.*;
 import tests.helpers.AddRemoveElementsExampleComponents;
 import utils.Attachments;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.open;
@@ -26,7 +23,6 @@ public class AddRemoveElementsExampleTests extends AddRemoveElementsExampleCompo
     @AfterEach
     void tearDown() {
         Attachments.addScreenshot();
-        Attachments.attachVideoFromSelenoid();
     }
 
     @Feature("Проверки раздела 'Add/Remove Elements'")

@@ -4,6 +4,7 @@ import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.chrome.ChromeOptions;
+import utils.Attachments;
 
 public class TheInternetHeroKuAppConfiguration {
     @BeforeAll
@@ -66,6 +67,12 @@ public class TheInternetHeroKuAppConfiguration {
 
         Configuration.browserCapabilities = allOptions;
         System.out.println("##teamcity[blockOpened name='Added browserCapabilities for chrome browser']");
+    }
+
+    @AfterAll
+    static void afterAll() {
+        //Оптимизируем место на диске. Т.к все тесты запускаются в рамках одной сессисии. Видео общее прикладывается в црнце
+        Attachments.attachVideoFromSelenoid();
     }
 
     //Оригинальная ссылка для переключения в случае работоспособности

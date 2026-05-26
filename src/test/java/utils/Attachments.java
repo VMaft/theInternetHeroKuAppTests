@@ -20,10 +20,10 @@ public class Attachments extends TheInternetHeroKuAppConfiguration {
     public static void attachVideoFromSelenoid() {
         if (isCiRun()) {
             String sessionId = String.valueOf(WebDriverRunner.driver().getSessionId());
-            String videoUrl = String.format("%s/video/%s.mp4", System.getenv("SELENOID_REMOTE"), sessionId);
+            String videoUrl = String.format("%s/%s.mp4", System.getenv("SELENOID_VIDEO"), sessionId);
 
             try (InputStream videoStream = new URL(videoUrl).openStream()) {
-                Allure.addAttachment("SelenoidVideo" + sessionId, "video/mp4", videoStream, ".mp4");
+                Allure.addAttachment("AfterAllVideo_" + sessionId, "video/mp4", videoStream, ".mp4");
             } catch (Exception e) {
                 // Видео еще может обрабатываться или не найдено
                 System.out.println("Видео не готово: " + e.getMessage());
