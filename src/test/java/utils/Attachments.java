@@ -26,7 +26,7 @@ public class Attachments extends TheInternetHeroKuAppConfiguration {
                 Allure.addAttachment("AfterAllVideo_" + sessionId, "video/mp4", videoStream, ".mp4");
             } catch (Exception e) {
                 // Видео еще может обрабатываться или не найдено
-                System.out.println("Видео не готово: " + e.getMessage());
+                System.out.println("Видео еще записывается." + e.getMessage());
             }
         }
     }

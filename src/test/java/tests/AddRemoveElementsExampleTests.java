@@ -32,7 +32,7 @@ public class AddRemoveElementsExampleTests extends AddRemoveElementsExampleCompo
     @Link(BASE_URL)
     void elementsOfAddAndRemoveElementExamplesIsEnabled() {
         step("Открываем The-Internet", () -> Selenide.open(BASE_URL));
-        step("Ищеи и переходим в раздел Add/Remove Elements", () -> addRemovePageLocator.click());
+        step("Ищем и переходим в раздел Add/Remove Elements", () -> addRemovePageLocator.click());
         step("Проверяем элементы страницы:", () -> {
             step("Заголовок содержит текст" + headerExpectedText, () -> {
                 headerLocator.shouldHave(text(headerExpectedText));
