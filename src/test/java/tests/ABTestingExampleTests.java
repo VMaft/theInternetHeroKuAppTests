@@ -27,7 +27,6 @@ public class ABTestingExampleTests extends ABTestingExampleTestsComponents {
     @AfterEach
     void addAttachments() {
         Attachments.addScreenshot();
-        Attachments.attachVideoFromSelenoid();
     }
 
     @Feature("Раздел A/B Testing")

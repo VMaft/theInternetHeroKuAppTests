@@ -83,8 +83,8 @@ public class TheInternetHeroKuAppConfiguration {
         selenoidOptions.setCapability("enableVideo", true);
 
         MutableCapabilities allOptions = new MutableCapabilities();
-        allOptions.merge(chromeOptions);                     // браузерные настройки
-        allOptions.setCapability("selenoid:options", selenoidOptions); // ключевое отличие!
+        allOptions.merge(chromeOptions);
+        allOptions.setCapability("selenoid:options", selenoidOptions);
 
         Configuration.browserCapabilities = allOptions;
         System.out.println("##teamcity[blockOpened name='Added browserCapabilities for chrome browser']");
