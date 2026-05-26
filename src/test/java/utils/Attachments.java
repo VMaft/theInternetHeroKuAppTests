@@ -17,7 +17,21 @@ public class Attachments extends TheInternetHeroKuAppConfiguration {
         return ((TakesScreenshot) WebDriverRunner.getWebDriver()).getScreenshotAs(OutputType.BYTES);
     }
 
-    public static void attachVideoFromSelenoid() {
+    @Attachment(value = "Видео выполнения теста", type = "text/html", fileExtension = ".html")
+    public static String attachVideoAsHtmlLink(String sessionId) {
+        String selenoidUrl = System.getenv("SELENOID_URL"); // например http://localhost:4444
+        return String.format("""
+        <html>
+            <body>
+                <video width='100%%' height='100%%' controls autoplay>
+                    <source src='%s/video/%s.mp4' type='video/mp4'>
+                </video>
+            </body>
+        </html>
+        """, selenoidUrl, sessionId);
+    }
+
+    public static void downloadAndAttachVideoFromSelenoid() {
         if (isCiRun()) {
             String sessionId = String.valueOf(WebDriverRunner.driver().getSessionId());
             String videoUrl = String.format("%s/%s.mp4", System.getenv("SELENOID_VIDEO"), sessionId);

@@ -1,6 +1,7 @@
 package configuration;
 
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.WebDriverRunner;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -28,7 +29,9 @@ public class TheInternetHeroKuAppConfiguration {
     @AfterAll
     static void afterAll() {
         //Оптимизируем место на диске. Т.к все тесты запускаются в рамках одной сессисии. Видео общее прикладывается в конце прогона
-        Attachments.attachVideoFromSelenoid();
+        Attachments.attachVideoAsHtmlLink(
+                String.valueOf(WebDriverRunner.driver().getSessionId())
+        );
         getWebDriver().close();
     }
 
