@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id("io.qameta.allure") version "3.2.0"
+    id 'io.qameta.allure' version '3.2.0'
 }
 
 group = 'ru.mvaft'
@@ -50,4 +50,3 @@ tasks.withType(Test) {
 
 compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
-
