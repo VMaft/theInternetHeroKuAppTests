@@ -23,17 +23,6 @@ dependencies {
 
 allure {
     version = '2.27.0'
-    adapter {
-        allureJavaVersion = '2.27.0'
-        aspectjWeaver = true
-        autoconfigureListeners = true
-        frameworks {
-            junit5 {
-                adapterVersion = '2.27.0'
-                enabled = true
-            }
-        }
-    }
 }
 
 test {
