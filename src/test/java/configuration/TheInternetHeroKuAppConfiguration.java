@@ -29,9 +29,9 @@ public class TheInternetHeroKuAppConfiguration {
     @AfterAll
     static void afterAll() {
         //Оптимизируем место на диске. Т.к все тесты запускаются в рамках одной сессисии. Видео общее прикладывается в конце прогона
-        Attachments.attachVideoAsHtmlLink(
-                String.valueOf(WebDriverRunner.driver().getSessionId())
-        );
+        String sessionID = String.valueOf(WebDriverRunner.driver().getSessionId());
+        System.out.println("Current Session ID: " + sessionID);
+        Attachments.attachVideoAsHtmlLink(sessionID);
         getWebDriver().close();
     }
 
@@ -57,6 +57,7 @@ public class TheInternetHeroKuAppConfiguration {
             System.out.println("##teamcity[message text='Attention: Using remote Selenoid' status='WARNING']");
 
             setupSelenoid();
+            System.out.println("Final capabilities: " + Configuration.browserCapabilities.asMap());
 
             Configuration.remote = selenoidRemote;
             Configuration.browser = selenideBrowser;
