@@ -20,9 +20,7 @@ public class Attachments extends TheInternetHeroKuAppConfiguration {
     @Attachment(value = "Видео выполнения теста", type = "text/html", fileExtension = ".html")
     public static String attachVideoAsHtmlLink(String sessionId) {
         String selenoidVideoUrl = System.getenv("SELENOID_VIDEO");
-
         System.out.println("------------- DEBUG: selenoidUrl: " + selenoidVideoUrl);
-        System.out.println("------------- DEBUG: sessionId: " + sessionId);
 
         return String.format("""
         <html>
