@@ -19,14 +19,15 @@ public class TheInternetHeroKuAppConfiguration {
     //Локально поднятый в Docker TheInternetHeroKuApp
     //public final String BASE_URL = "http://localhost:7080";
 
+
     @BeforeAll
     static void beforeAll() {
         String selenoidRemote = System.getenv("SELENOID_REMOTE");
         String selenideBrowser = System.getenv("SELENIDE_BROWSER");
+        boolean runTestsOnSelenoid = Boolean.parseBoolean(System.getProperty("selenoid.runOnLocalSelenoid", "false"));
 
-        validateEnvironmentVariables(selenoidRemote, selenideBrowser);
+        validateEnvironmentVariables(selenoidRemote, selenideBrowser, runTestsOnSelenoid);
 
-        Configuration.browserSize = "1920x1080";
         System.out.println("##teamcity[message text='Set configuration.browserSize = \"1920x1080\"' status='NORMAL']");
     }
 
@@ -39,7 +40,7 @@ public class TheInternetHeroKuAppConfiguration {
         getWebDriver().close();
     }
 
-    private static void validateEnvironmentVariables(String selenoidRemote, String selenideBrowser) {
+    private static void validateEnvironmentVariables(String selenoidRemote, String selenideBrowser, boolean runTestsOnSelenoid) {
         if (selenoidRemote == null) {
             System.out.println("##teamcity[message text='Environment variable 'SELENOID_REMOTE' is null or empty.' status='WARNING']");
             selenoidRemote = System.getProperty("selenoid.url");
@@ -68,16 +69,28 @@ public class TheInternetHeroKuAppConfiguration {
 
             System.out.println("""
                      \s
-                      ==========Running in CI==========\s
+                      ========== Running in CI ==========\s
                       With remote:
                      \s
                     \s""" + selenoidRemote);
 
             System.out.println("##teamcity[blockClosed name='Reading configuration file.']");
         } else {
+            if(runTestsOnSelenoid) {
+                setupSelenoid();
+                Configuration.remote = System.getProperty("selenoid.url");
+
+                System.out.printf("""
+                    ========== The browser configuration was set to run locally on Selenoid ==========
+                    === Running on: %s ===
+                    === ===
+                    """, Configuration.remote
+                );
+            }
+
             Configuration.browser = "chrome";
             System.out.println("""
-                    ==========Running locally==========
+                    ========== Running locally ==========
                     """);
         }
     }
@@ -92,6 +105,7 @@ public class TheInternetHeroKuAppConfiguration {
 
         Map<String, Object> selenoidOptions = new HashMap<>();
         selenoidOptions.put("name", System.getProperty("test.name", "Test badge..."));
+        selenoidOptions.put("browserVersion", "128.0");
         selenoidOptions.put("sessionTimeout", "3m");
         selenoidOptions.put("env", List.of("TZ=UTC"));
 

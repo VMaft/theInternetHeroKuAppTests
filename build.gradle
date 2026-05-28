@@ -39,3 +39,55 @@ tasks.withType(Test) {
 
 compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
+
+// Задача для копирования видео
+tasks.register('copySelenoidVideo', Copy) {
+    description = 'Copy video recordings from Selenoid to build directory'
+    group = 'selenoid'
+
+    from 'selenoid-video'
+    into 'build/video-recordings'
+    include '*.mp4'
+
+    doLast {
+        println "Video recordings copied to build/video-recordings"
+    }
+}
+
+tasks.register('runTestsOnSelenoid', Test) {
+    description = 'Run tests on local Selenoid'
+    group = 'selenoid'
+
+    useJUnitPlatform()
+
+    classpath = test.classpath
+    testClassesDirs = test.testClassesDirs
+
+    // Системные свойства для Selenoid
+    def runOnSelenoid = project.findProperty('selenoid.runOnLocalSelenoid') ?: 'false'
+    systemProperty "selenoid.runOnLocalSelenoid", runOnSelenoid
+
+    def selenoidUrl = project.findProperty('selenoid.url') ?: 'http://localhost:4444/wd/hub'
+    systemProperty "selenoid.url", selenoidUrl
+
+    systemProperty "selenoid.browser", project.findProperty("selenoid.browser") ?: "chrome"
+    systemProperty "selenoid.enableVNC", project.findProperty("selenoid.enableVNC") ?: "true"
+
+    // Настройка отчётов
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "full"
+    }
+
+    // Генерация Allure отчёта
+    systemProperty "allure.results.directory", "build/allure-results"
+
+    // Переопределяем директорию с результатами, чтобы не смешивать с обычными тестами
+    reports {
+        junitXml.required = true
+        html.required = true
+        html.outputLocation = layout.buildDirectory.dir('reports/selenoid-tests')
+    }
+
+    finalizedBy copySelenoidVideo
+}
