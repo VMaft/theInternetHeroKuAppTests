@@ -26,11 +26,11 @@ public class Attachments extends TheInternetHeroKuAppConfiguration {
         <html>
             <body>
                 <video width='100%%' height='100%%' controls autoplay>
-                    <source src='%s/%s.mp4' type='video/mp4'>
+                    <source src='http://localhost:8080/video/%s.mp4' type='video/mp4'>
                 </video>
             </body>
         </html>
-        """, selenoidVideoUrl, sessionId);
+        """, sessionId);
     }
 
     public static void downloadAndAttachVideoFromSelenoid() {
