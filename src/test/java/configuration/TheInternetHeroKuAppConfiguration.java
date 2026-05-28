@@ -3,9 +3,13 @@ package configuration;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.chrome.ChromeOptions;
 import utils.Attachments;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
 public class TheInternetHeroKuAppConfiguration {
@@ -79,18 +83,49 @@ public class TheInternetHeroKuAppConfiguration {
     }
 
     public static void setupSelenoid() {
-        ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("--no-sandbox", "--disable-dev-shm-usage");
-
-        MutableCapabilities selenoidOptions = new MutableCapabilities();
-        selenoidOptions.setCapability("enableVNC", true);
-        selenoidOptions.setCapability("enableVideo", true);
-
-        MutableCapabilities allOptions = new MutableCapabilities();
-        allOptions.merge(chromeOptions);
-        allOptions.setCapability("selenoid:options", selenoidOptions);
-
-        Configuration.browserCapabilities = allOptions;
+        Configuration.browserCapabilities = getChromeCapabilities();
         System.out.println("##teamcity[blockOpened name='Added browserCapabilities for chrome browser']");
+    }
+
+    public static ChromeOptions getChromeCapabilities() {
+        ChromeOptions options = setChromeArgumentsOptions();
+
+        Map<String, Object> selenoidOptions = new HashMap<>();
+        selenoidOptions.put("name", System.getProperty("test.name", "Test badge..."));
+        selenoidOptions.put("sessionTimeout", "3m");
+        selenoidOptions.put("env", List.of("TZ=UTC"));
+
+        Map<String, Object> labels = new HashMap<>();
+        labels.put("ci", "true");
+        labels.put("build", System.getProperty("build.number", "local"));
+        labels.put("branch", System.getProperty("branch.name", "unknown"));
+
+        selenoidOptions.put("labels", labels);
+
+        selenoidOptions.put("enableVideo", System.getProperty("enable.video", "true").equals("true"));
+        selenoidOptions.put("enableVNC", true);
+
+        selenoidOptions.put("logName", "chrome.log");
+        selenoidOptions.put("screenResolution", "1920x1080x24");
+
+        options.setCapability("selenoid:options", selenoidOptions);
+
+        return options;
+    }
+
+    private static ChromeOptions setChromeArgumentsOptions() {
+        ChromeOptions options = new ChromeOptions();
+
+        options.addArguments(
+                "--no-sandbox",
+                "--disable-dev-shm-usage",
+                "--headless",
+                "--disable-gpu",
+                "--window-size=1920,1080",
+                "--disable-extensions",
+                "--disable-setuid-sandbox",
+                "--disable-features=VizDisplayCompositor"
+        );
+        return options;
     }
 }
