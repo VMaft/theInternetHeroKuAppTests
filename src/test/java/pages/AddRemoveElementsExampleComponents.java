@@ -1,8 +1,8 @@
-package tests.helpers;
+package pages;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import configuration.TheInternetHeroKuAppConfiguration;
+import config.TheInternetHeroKuAppConfiguration;
 import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Selenide.$;
@@ -37,7 +37,7 @@ public class AddRemoveElementsExampleComponents extends TheInternetHeroKuAppConf
     public void deleteElementsOnThePage(int count){
         if(count <= 0) {
             throw new IllegalArgumentException("Incorrect arguments definition. " +
-                    "Number of element is more or less than current Buttons count: ["
+                    "Number of element is less than current Buttons count: ["
                     + getCurrentAddedElementsCount() + "]"
             );
         }
@@ -46,6 +46,7 @@ public class AddRemoveElementsExampleComponents extends TheInternetHeroKuAppConf
             System.out.println("WARNING:  There are fewer elements on the page than need to be removed. " +
                     "The following will be removed:" + getCurrentAddedElementsCount()
             );
+            count = getCurrentAddedElementsCount();
         }
         for (int i = 1; i <= count; i++) {
             deleteButtonsList.last().click();

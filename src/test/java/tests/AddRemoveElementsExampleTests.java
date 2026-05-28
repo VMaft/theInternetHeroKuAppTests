@@ -5,7 +5,7 @@ import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.*;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.*;
-import tests.helpers.AddRemoveElementsExampleComponents;
+import pages.AddRemoveElementsExampleComponents;
 import utils.Attachments;
 
 import static com.codeborne.selenide.Condition.*;

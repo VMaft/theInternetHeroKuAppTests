@@ -1,7 +1,7 @@
 package utils;
 
 import com.codeborne.selenide.WebDriverRunner;
-import configuration.TheInternetHeroKuAppConfiguration;
+import config.TheInternetHeroKuAppConfiguration;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Attachment;
 import org.openqa.selenium.OutputType;

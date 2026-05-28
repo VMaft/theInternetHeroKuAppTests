@@ -1,4 +1,4 @@
-package configuration;
+package config;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
@@ -18,7 +18,6 @@ public class TheInternetHeroKuAppConfiguration {
     public static final String BASE_URL = "https://the-internet.herokuapp.com/";
     //Локально поднятый в Docker TheInternetHeroKuApp
     //public final String BASE_URL = "http://localhost:7080";
-
 
     @BeforeAll
     static void beforeAll() {
