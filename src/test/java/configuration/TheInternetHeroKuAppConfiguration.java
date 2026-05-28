@@ -1,72 +1,145 @@
 package configuration;
 
 import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.WebDriverRunner;
 import org.junit.jupiter.api.*;
+import org.openqa.selenium.chrome.ChromeOptions;
+import utils.Attachments;
 
-import static com.codeborne.selenide.Selenide.$;
-import static org.openqa.selenium.By.linkText;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
 public class TheInternetHeroKuAppConfiguration {
+
+    //Оригинальная ссылка для переключения в случае работоспособности
+    public static final String BASE_URL = "https://the-internet.herokuapp.com/";
+    //Локально поднятый в Docker TheInternetHeroKuApp
+    //public final String BASE_URL = "http://localhost:7080";
+
+
     @BeforeAll
     static void beforeAll() {
-        System.out.println("##teamcity[blockOpened name='Reading configuration file.']");
-
         String selenoidRemote = System.getenv("SELENOID_REMOTE");
-        System.out.println("##teamcity[message text='Selenoid URL: " + selenoidRemote + "' status='NORMAL']");
-
         String selenideBrowser = System.getenv("SELENIDE_BROWSER");
-        System.out.println("##teamcity[message text='Browser: " + selenideBrowser + "' status='NORMAL']");
+        boolean runTestsOnSelenoid = Boolean.parseBoolean(System.getProperty("selenoid.runOnLocalSelenoid", "false"));
 
-        if(selenoidRemote == null){
-            //##teamcity[message text='Too many llamas!' status='WARNING']
+        validateEnvironmentVariables(selenoidRemote, selenideBrowser, runTestsOnSelenoid);
+
+        System.out.println("##teamcity[message text='Set configuration.browserSize = \"1920x1080\"' status='NORMAL']");
+    }
+
+    @AfterAll
+    static void afterAll() {
+        //Оптимизируем место на диске. Т.к все тесты запускаются в рамках одной сессисии. Видео общее прикладывается в конце прогона
+        String sessionID = String.valueOf(WebDriverRunner.driver().getSessionId());
+        System.out.println("Current Session ID: " + sessionID);
+        Attachments.attachVideoAsHtmlLink(sessionID);
+        getWebDriver().close();
+    }
+
+    private static void validateEnvironmentVariables(String selenoidRemote, String selenideBrowser, boolean runTestsOnSelenoid) {
+        if (selenoidRemote == null) {
             System.out.println("##teamcity[message text='Environment variable 'SELENOID_REMOTE' is null or empty.' status='WARNING']");
-
             selenoidRemote = System.getProperty("selenoid.url");
             System.out.println("##teamcity[message text='Getting Selenoid.URL from commandline calling parameters. Value: " + selenoidRemote + "' status='NORMAL']");
         }
-        if(selenideBrowser == null){
+
+        if (selenideBrowser == null) {
             System.out.println("##teamcity[message text='WARNING: Environment variable 'SELENIDE_BROWSER' is null or empty.' status='WARNING']");
 
             selenideBrowser = System.getProperty("browser");
             System.out.println("##teamcity[message text='Get BROWSER from commandline calling parameters. Value: " + selenideBrowser + "' status='NORMAL']");
         }
 
-        if(selenoidRemote != null && selenideBrowser != null){
+        if (selenoidRemote != null && selenideBrowser != null) {
+            System.out.println("##teamcity[blockOpened name='Reading configuration file.']");
+
+            System.out.println("##teamcity[message text='Selenoid URL: " + selenoidRemote + "' status='NORMAL']");
+            System.out.println("##teamcity[message text='Browser: " + selenideBrowser + "' status='NORMAL']");
             System.out.println("##teamcity[message text='Attention: Using remote Selenoid' status='WARNING']");
+
+            setupSelenoid();
+            System.out.println("Final capabilities: " + Configuration.browserCapabilities.asMap());
 
             Configuration.remote = selenoidRemote;
             Configuration.browser = selenideBrowser;
 
             System.out.println("""
-                   \s
-                    ==========Running in CI==========\s
-                    With remote:
-                   \s
-                  \s""" + selenoidRemote);
-        } else{
+                     \s
+                      ========== Running in CI ==========\s
+                      With remote:
+                     \s
+                    \s""" + selenoidRemote);
+
+            System.out.println("##teamcity[blockClosed name='Reading configuration file.']");
+        } else {
+            if(runTestsOnSelenoid) {
+                setupSelenoid();
+                Configuration.remote = System.getProperty("selenoid.url");
+
+                System.out.printf("""
+                    ========== The browser configuration was set to run locally on Selenoid ==========
+                    === Running on: %s ===
+                    === ===
+                    """, Configuration.remote
+                );
+            }
+
             Configuration.browser = "chrome";
             System.out.println("""
-                    ==========Running locally==========
+                    ========== Running locally ==========
                     """);
         }
-        Configuration.browserSize = "1920x1080";
-        System.out.println("##teamcity[message text='Set configuration.browserSize = \"1920x1080\"' status='NORMAL']");
-
-        System.out.println("##teamcity[blockClosed name='Reading configuration file.']");
     }
 
-    //Оригинальная ссылка для переключения в случае работоспособности
-    public final String BASE_URL = "https://the-internet.herokuapp.com/";
+    public static void setupSelenoid() {
+        Configuration.browserCapabilities = getChromeCapabilities();
+        System.out.println("##teamcity[blockOpened name='Added browserCapabilities for chrome browser']");
+    }
 
-    //Локально поднятый в Docker TheInternetHeroKuApp
-    //public final String BASE_URL = "http://localhost:7080";
+    public static ChromeOptions getChromeCapabilities() {
+        ChromeOptions options = setChromeArgumentsOptions();
 
-    public final String[] abTestsHeadersStrings = {
-            "A/B Test Control",
-            "A/B Test Variation 1",
-            "\uD83E\uDD2A A/B Test Variation 2 — CHAOS MODE \uD83E\uDD2A"
-    };
+        Map<String, Object> selenoidOptions = new HashMap<>();
+        selenoidOptions.put("name", System.getProperty("test.name", "Test badge..."));
+        selenoidOptions.put("browserVersion", "128.0");
+        selenoidOptions.put("sessionTimeout", "3m");
+        selenoidOptions.put("env", List.of("TZ=UTC"));
 
-    public final SelenideElement abTestingPageLocator = $(linkText("A/B Testing"));
+        Map<String, Object> labels = new HashMap<>();
+        labels.put("ci", "true");
+        labels.put("build", System.getProperty("build.number", "local"));
+        labels.put("branch", System.getProperty("branch.name", "unknown"));
+
+        selenoidOptions.put("labels", labels);
+
+        selenoidOptions.put("enableVideo", System.getProperty("enable.video", "true").equals("true"));
+        selenoidOptions.put("enableVNC", true);
+
+        selenoidOptions.put("logName", "chrome.log");
+        selenoidOptions.put("screenResolution", "1920x1080x24");
+
+        options.setCapability("selenoid:options", selenoidOptions);
+
+        return options;
+    }
+
+    private static ChromeOptions setChromeArgumentsOptions() {
+        ChromeOptions options = new ChromeOptions();
+
+        options.addArguments(
+                "--no-sandbox",
+                "--disable-dev-shm-usage",
+                //"--headless",  --Отключаем headless для записи видео через selenoid-video.
+                "--disable-gpu",
+                "--window-size=1920,1080",
+                "--disable-extensions",
+                "--disable-setuid-sandbox",
+                "--disable-features=VizDisplayCompositor"
+        );
+        return options;
+    }
 }

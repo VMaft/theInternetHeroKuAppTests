@@ -4,14 +4,11 @@ import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.*;
 import io.qameta.allure.selenide.AllureSelenide;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.*;
 import tests.helpers.AddRemoveElementsExampleComponents;
 import utils.Attachments;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import static io.qameta.allure.Allure.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,6 +20,11 @@ public class AddRemoveElementsExampleTests extends AddRemoveElementsExampleCompo
         SelenideLogger.addListener("allure", new AllureSelenide());
     }
 
+    @AfterEach
+    void tearDown() {
+        Attachments.addScreenshot();
+    }
+
     @Feature("Проверки раздела 'Add/Remove Elements'")
     @Story("Тестирование добавления и удаления элементов в разделе")
     @Test
@@ -30,7 +32,7 @@ public class AddRemoveElementsExampleTests extends AddRemoveElementsExampleCompo
     @Link(BASE_URL)
     void elementsOfAddAndRemoveElementExamplesIsEnabled() {
         step("Открываем The-Internet", () -> Selenide.open(BASE_URL));
-        step("Ищеи и переходим в раздел Add/Remove Elements", () -> addRemovePageLocator.click());
+        step("Ищем и переходим в раздел Add/Remove Elements", () -> addRemovePageLocator.click());
         step("Проверяем элементы страницы:", () -> {
             step("Заголовок содержит текст" + headerExpectedText, () -> {
                 headerLocator.shouldHave(text(headerExpectedText));
@@ -42,7 +44,7 @@ public class AddRemoveElementsExampleTests extends AddRemoveElementsExampleCompo
                 addButtonLocator.shouldBe(enabled);
             });
         });
-        Attachments.takeScreenShot();
+        Attachments.addScreenshot();
     }
 
     @Feature("Проверки раздела 'Add/Remove Elements'")
@@ -64,9 +66,7 @@ public class AddRemoveElementsExampleTests extends AddRemoveElementsExampleCompo
     @DisplayName("Пользователь может добавить и удалить элементы со страницы")
     public void userCanDeleteAddedElementsByClickOnDeleteButton() {
         step("Открвываем раздел 'Add/Remove Elements'", () -> open(addRemoveElementsPageURL));
-        step("Добавляем " + countOfElementsToAdd + " элементов на страницу", () -> {
-            addElementsToThePage(5);
-        });
+        step("Добавляем " + countOfElementsToAdd + " элементов на страницу", () -> addElementsToThePage(5));
         step("Проверяем что на странице отобразилась " + countOfElementsToAdd + " элементов", () -> {
             assertThat(deleteButtonsList.size()).isEqualTo(countOfElementsToAdd);
             System.out.println(deleteButtonsList.size());
