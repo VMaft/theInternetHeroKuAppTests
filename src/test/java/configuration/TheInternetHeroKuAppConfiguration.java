@@ -119,7 +119,7 @@ public class TheInternetHeroKuAppConfiguration {
         options.addArguments(
                 "--no-sandbox",
                 "--disable-dev-shm-usage",
-                "--headless",
+                //"--headless",  --Отключаем headless для записи видео через selenoid-video.
                 "--disable-gpu",
                 "--window-size=1920,1080",
                 "--disable-extensions",
