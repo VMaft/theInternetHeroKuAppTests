@@ -11,9 +11,11 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
 public class HomePage {
-    public static final SelenideElement homePageHeaderLocator = $(".heading");
-    public static final SelenideElement availableExamplesHeaderLocator = $(byText("Available Examples"));
-    public static final ElementsCollection examplesElementsCollectionLocator = $$("#content > ul");
+    public final SelenideElement homePageHeaderLocator = $(".heading");
+    public final SelenideElement availableExamplesHeaderLocator = $(byText("Available Examples"));
+    public final SelenideElement headerLocator = $("h3");
+    public final ElementsCollection examplesElementsCollectionLocator = $$("#content > ul");
+
 
     public static final String[] availableExamplesNamesList = {
             "A/B Testing",
@@ -112,17 +114,28 @@ public class HomePage {
         return this;
     }
 
-    public HomePage clickOn(String linkText){
-        $(byText(linkText)).click();
-        return this;
-    }
-
+    //сохраняем возможность открыть элемент по локатору, так и по тексту элемента
     public HomePage clickOn(SelenideElement elementLocator){
         elementLocator.click();
         return this;
     }
 
-    public int getExamplesCount(){
+    //сохраняем возможность открыть элемент по локатору, так и по тексту элемента
+    public HomePage clickOn(String linkText){
+        $(byText(linkText)).click();
+        return this;
+    }
+
+    public SelenideElement elementWithText(String elementText){
+        return $(byText(elementText));
+    }
+
+    public int getElementsCount(){
         return examplesElementsCollectionLocator.size();
+    }
+
+    public HomePage clickLinkWith(String elementText){
+        elementWithText(elementText).click();
+        return this;
     }
 }
