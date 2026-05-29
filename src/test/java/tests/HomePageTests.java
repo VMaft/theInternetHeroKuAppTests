@@ -15,7 +15,8 @@ import static com.codeborne.selenide.Condition.visible;
 import static io.qameta.allure.Allure.step;
 
 @DisplayName("Проверки главной страницы The-Internet")
-public class HomePageTests {
+public class HomePageTests extends BaseTest{
+
     HomePage page = new HomePage();
 
     @Feature("Welcome to the-internet")
