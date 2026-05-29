@@ -6,6 +6,7 @@ import io.qameta.allure.Story;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import pages.ABTestingPage;
 
 import static com.codeborne.selenide.Condition.*;
@@ -24,7 +25,7 @@ public class ABTestingTests extends BaseTest {
     @Test
     @DisplayName("Проверка что текущая страница является допустимым вариантом.")
     public void abTestsPageDisplayedStaticControlVersion() {
-        step("Переходим в раздел 'A/B Testing'", () -> page.open());
+        step("Открываем страницу 'A/B Testing'", () -> page.open());
         step("Проверяем что страница является допустимым вариантом (A || B)", () -> {
             page.headerElement.shouldHave(oneOfTexts(page.abTestsHeadersStrings));
         });
@@ -32,14 +33,12 @@ public class ABTestingTests extends BaseTest {
 
     @Feature("Раздел A/B Testing")
     @Story("Тестирование вариантов отображения странциы A/B Testing")
-    @Test
+    @ParameterizedTest
+    @ValueSource(ints = {20})
     @DisplayName("Проверка динамического отображения текста и заголовка страницы со сбросом cookies")
-    public void abTestsBothVariantsAreAvailableWhenClearingCookies() {
-        step("Переходим в раздел 'A/B Testing'", () -> page.open());
-        step("Проверяем что страница является допустимым вариантом (A || B)", () -> {
-            page.headerElement.shouldHave(oneOfTexts(page.abTestsHeadersStrings));
-        });
-        step("Проверяем что пользователь может увидеть все варианты страниц за число попыток", () -> {
+    public void abTestsBothVariantsAreAvailableWhenClearingCookies(int attemptsCount) {
+        step("Открываем страницу 'A/B Testing'", () -> page.open());
+        step("Проверяем что пользователь может увидеть все варианты страниц за " + attemptsCount + " попыток", () -> {
             assertThat(page.bothExpectedVariantsAppearWithinAttempts(20))
                     .as("Проверяем что оба варианта видны за 20 попыток")
                     .isTrue();
@@ -51,7 +50,7 @@ public class ABTestingTests extends BaseTest {
     @Test
     @DisplayName("Проверка статичного отображения текста и заголовка страницы без сброса cookies")
     public void abTestsPageDisplayedStaticControlVersionWithoutClearingCookies() {
-        step("Переходим в раздел 'A/B Testing'", () -> page.open());
+        step("Открываем страницу 'A/B Testing'", () -> page.open());
         step("Проверяем что страница является допустимым вариантом (A || B)", () -> {
             page.headerElement.shouldHave(oneOfTexts(page.abTestsHeadersStrings));
         });
@@ -82,7 +81,7 @@ public class ABTestingTests extends BaseTest {
             "abtest_variation_2, \uD83E\uDD2A A/B Test Variation 2 — CHAOS MODE \uD83E\uDD2A",
     })
     void someFunVariationOfABTestsCanBeDirectlyOpened(String pagePath, String headerName) {
-        step("Открываем страницу с вариантом по URL", () -> page.open());
+        step("Открываем страницу с вариантом по URL", () -> page.openByEndpoint(pagePath));
         step("Проверяем что страница '" + pagePath
                 + "' отборажает заголовок '" + headerName + "'", () -> {
             $(".example h3").shouldBe(visible);
@@ -107,5 +106,5 @@ public class ABTestingTests extends BaseTest {
         });
     }
 
-    
+
 }

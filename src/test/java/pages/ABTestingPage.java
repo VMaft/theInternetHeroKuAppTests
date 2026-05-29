@@ -42,7 +42,7 @@ public class ABTestingPage {
 
     public boolean bothExpectedVariantsAppearWithinAttempts(int attemptCount){
         HashMap<String, String> pageData = getListOfPageHeadersAndTextsWithinAttemptsCount(attemptCount, true);
-        return Arrays.stream(abTestsHeadersLocalStrings)
+        return Arrays.stream(abTestsHeadersStrings)
                 .allMatch(pageData::containsKey);
     }
 
@@ -52,7 +52,7 @@ public class ABTestingPage {
         for (int attemption = 1; attemption <= maxAttempts; attemption++) {
             pageElements.put($(".example h3").text(), $(".example p").text());
 
-            if(pageElements.size() == 2) break;
+            if(pageElements.size() == abTestsHeadersStrings.length) break;
             if(clearCookies) clearBrowserCookies();
 
             navigateToABTestPage();
