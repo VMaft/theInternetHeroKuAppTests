@@ -20,6 +20,8 @@ public class ABTestingTests extends BaseTest {
 
     ABTestingPage page = new ABTestingPage();
 
+
+
     @Feature("Раздел A/B Testing")
     @Story("Тестирование вариантов отображения странциы A/B Testing")
     @Test

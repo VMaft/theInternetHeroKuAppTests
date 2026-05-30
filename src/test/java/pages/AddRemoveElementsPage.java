@@ -8,9 +8,9 @@ import org.openqa.selenium.By;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
-public class AddRemoveElementsExampleComponents extends TheInternetHeroKuAppConfiguration {
+public class AddRemoveElementsPage {
     public final SelenideElement addRemovePageLocator = $(By.linkText("Add/Remove Elements"));
-    public final String addRemoveElementsPageURL = BASE_URL + "/add_remove_elements/";
+    public final String addRemoveElementsPageURL = TheInternetHeroKuAppConfiguration.BASE_URL + "/add_remove_elements/";
 
     public final SelenideElement headerLocator = $("h3");
     public final String headerExpectedText = "Add/Remove Elements";

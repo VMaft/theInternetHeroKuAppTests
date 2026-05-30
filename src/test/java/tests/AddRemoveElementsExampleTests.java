@@ -1,24 +1,21 @@
 package tests;
 
 import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.*;
-import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.*;
-import pages.AddRemoveElementsExampleComponents;
+import pages.AddRemoveElementsPage;
 import utils.Attachments;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.open;
+import static config.TheInternetHeroKuAppConfiguration.BASE_URL;
 import static io.qameta.allure.Allure.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Раздел 'Add/Remove Elements'")
-public class AddRemoveElementsExampleTests extends AddRemoveElementsExampleComponents {
-    @BeforeEach
-    void setUp() {
-        SelenideLogger.addListener("allure", new AllureSelenide());
-    }
+public class AddRemoveElementsExampleTests extends BaseTest {
+
+    AddRemoveElementsPage page = new AddRemoveElementsPage();
 
     @AfterEach
     void tearDown() {
@@ -32,16 +29,16 @@ public class AddRemoveElementsExampleTests extends AddRemoveElementsExampleCompo
     @Link(BASE_URL)
     void elementsOfAddAndRemoveElementExamplesIsEnabled() {
         step("Открываем The-Internet", () -> Selenide.open(BASE_URL));
-        step("Ищем и переходим в раздел Add/Remove Elements", () -> addRemovePageLocator.click());
+        step("Ищем и переходим в раздел Add/Remove Elements", () -> page.addRemovePageLocator.click());
         step("Проверяем элементы страницы:", () -> {
-            step("Заголовок содержит текст" + headerExpectedText, () -> {
-                headerLocator.shouldHave(text(headerExpectedText));
+            step("Заголовок содержит текст" + page.headerExpectedText, () -> {
+                page.headerLocator.shouldHave(text(page.headerExpectedText));
             });
             step("Кнопка добавления элементов отображается", () -> {
-                addButtonLocator.shouldBe(visible);
+                page.addButtonLocator.shouldBe(visible);
             });
             step("Кнопка добавления элементов доступна", () -> {
-                addButtonLocator.shouldBe(enabled);
+                page.addButtonLocator.shouldBe(enabled);
             });
         });
         Attachments.addScreenshot();
@@ -52,11 +49,11 @@ public class AddRemoveElementsExampleTests extends AddRemoveElementsExampleCompo
     @Test
     @DisplayName("Пользователь может добавлять элементы на страницу нажатием кнопки 'Add Element'")
     public void userCanAddElementsByClickOnAddElementsButton() {
-        step("Открвываем раздел 'Add/Remove Elements'", () -> open(addRemoveElementsPageURL));
-        step("Нажимаем на кнопку добавления элемента на страницу", () -> addButtonLocator.click());
+        step("Открвываем раздел 'Add/Remove Elements'", () -> open(page.addRemoveElementsPageURL));
+        step("Нажимаем на кнопку добавления элемента на страницу", () -> page.addButtonLocator.click());
         step("Проверяем что на странице отобразилась кнопка Delete", () -> {
-            assertThat(deleteButtonsList.size()).isEqualTo(1);
-            System.out.println(deleteButtonsList.size());
+            assertThat(page.deleteButtonsList.size()).isEqualTo(1);
+            System.out.println(page.deleteButtonsList.size());
         });
     }
 
@@ -65,25 +62,25 @@ public class AddRemoveElementsExampleTests extends AddRemoveElementsExampleCompo
     @Test
     @DisplayName("Пользователь может добавить и удалить элементы со страницы")
     public void userCanDeleteAddedElementsByClickOnDeleteButton() {
-        step("Открвываем раздел 'Add/Remove Elements'", () -> open(addRemoveElementsPageURL));
-        step("Добавляем " + countOfElementsToAdd + " элементов на страницу", () -> addElementsToThePage(5));
-        step("Проверяем что на странице отобразилась " + countOfElementsToAdd + " элементов", () -> {
-            assertThat(deleteButtonsList.size()).isEqualTo(countOfElementsToAdd);
-            System.out.println(deleteButtonsList.size());
+        step("Открвываем раздел 'Add/Remove Elements'", () -> open(page.addRemoveElementsPageURL));
+        step("Добавляем " + page.countOfElementsToAdd + " элементов на страницу", () -> page.addElementsToThePage(5));
+        step("Проверяем что на странице отобразилась " + page.countOfElementsToAdd + " элементов", () -> {
+            assertThat(page.deleteButtonsList.size()).isEqualTo(page.countOfElementsToAdd);
+            System.out.println(page.deleteButtonsList.size());
         });
         step("Удаляем один элемент", ()-> {
-            deleteElementsOnThePage(1);
-            step("Проверяем что количество элементов теперь:" + (countOfElementsToAdd-1), ()->{
-                assertThat(deleteButtonsList.size()).isEqualTo(countOfElementsToAdd-1);
+            page.deleteElementsOnThePage(1);
+            step("Проверяем что количество элементов теперь:" + (page.countOfElementsToAdd-1), ()->{
+                assertThat(page.deleteButtonsList.size()).isEqualTo(page.countOfElementsToAdd-1);
             });
         });
         step("Удаление всех элементво на странице", ()-> {
-           deleteElementsOnThePage(getCurrentAddedElementsCount());
+            page.deleteElementsOnThePage(page.getCurrentAddedElementsCount());
             step("Проверяем что все добавленные элементы удалены", ()->{
-                assertThat(deleteButtonsList.size()).isEqualTo(0);
+                assertThat(page.deleteButtonsList.size()).isEqualTo(0);
             });
         });
-        Allure.addAttachment("Число элементов для добавления и удаления", String.valueOf(countOfElementsToAdd));
+        Allure.addAttachment("Число элементов для добавления и удаления", String.valueOf(page.countOfElementsToAdd));
         System.out.println();
     }
 }
