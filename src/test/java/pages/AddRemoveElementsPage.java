@@ -20,7 +20,6 @@ public class AddRemoveElementsPage {
     public final SelenideElement removeButtonLocator = $("[onclick='deleteElement()']");
     public final Integer countOfElementsToAdd = 5;
 
-
     public void addElementsToThePage(int count){
         if(count <= 0) {
             throw new IllegalArgumentException("Incorrect arguments definition. " +

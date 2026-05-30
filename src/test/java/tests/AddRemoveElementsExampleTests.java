@@ -53,7 +53,6 @@ public class AddRemoveElementsExampleTests extends BaseTest {
         step("Нажимаем на кнопку добавления элемента на страницу", () -> page.addButtonLocator.click());
         step("Проверяем что на странице отобразилась кнопка Delete", () -> {
             assertThat(page.deleteButtonsList.size()).isEqualTo(1);
-            System.out.println(page.deleteButtonsList.size());
         });
     }
 
