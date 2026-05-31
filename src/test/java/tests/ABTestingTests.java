@@ -13,12 +13,12 @@ import static io.qameta.allure.Allure.step;
 import static pages.ABTestingPage.ATTEMPTS_FOR_STATISTICAL_CONFIDENCE;
 
 @DisplayName("Проверки раздела A/B Testing")
+@Feature("Раздел A/B Testing")
+@Story("Тестирование вариантов отображения странциы A/B Testing")
 public class ABTestingTests extends BaseTest {
 
     ABTestingPage page = new ABTestingPage();
 
-    @Feature("Раздел A/B Testing")
-    @Story("Тестирование вариантов отображения странциы A/B Testing")
     @Test
     @DisplayName("Текущая страница является одним из допустимых А/В вариантов страницы")
     public void abTestsPageDisplayedStaticControlVersion() {
@@ -28,8 +28,6 @@ public class ABTestingTests extends BaseTest {
         });
     }
 
-    @Feature("Раздел A/B Testing")
-    @Story("Тестирование вариантов отображения странциы A/B Testing")
     @Test
     @DisplayName("Проверка динамического отображения вариантов страницы со сбросом cookies")
     public void abTestsBothVariantsAreAvailableWhenClearingCookies() {
@@ -39,8 +37,6 @@ public class ABTestingTests extends BaseTest {
         });
     }
 
-    @Feature("Раздел A/B Testing")
-    @Story("Тестирование вариантов отображения странциы A/B Testing")
     @Test
     @DisplayName("Проверка статичного отображения текста и заголовка страницы без сброса cookies")
     public void abTestsPageDisplayedStaticControlVersionWithoutClearingCookies() {
@@ -51,7 +47,6 @@ public class ABTestingTests extends BaseTest {
     }
 
     @Disabled("Тест отключен из-за того что на странице the-internet.herokuapp.com отсутствует реализация вариантов 1 и 2, в отличие от локальной сборки.")
-    @Feature("Раздел A/B Testing")
     @Story("Тестирование вариантов отображения странциы A/B/ (+C) Testing по прямой ссылке")
     @DisplayName("Пользователь может посмотреть варианты A/B.")
     @ParameterizedTest(name = "Раздел {0} открыт и содержит заголовок {1}.")
@@ -72,7 +67,6 @@ public class ABTestingTests extends BaseTest {
         });
     }
 
-    @Feature("Раздел A/B Testing")
     @Story("Пользователь может посмотреть варианты A/B по прямой ссылке")
     @DisplayName("Пользователь может посмотреть варианты A/B.")
     @ParameterizedTest(name = "Раздел {0} открыт и содержит заголовок {1}.")

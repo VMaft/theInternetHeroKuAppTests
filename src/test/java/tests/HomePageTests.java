@@ -15,12 +15,12 @@ import static com.codeborne.selenide.Condition.visible;
 import static io.qameta.allure.Allure.step;
 
 @DisplayName("Проверки главной страницы The-Internet")
+@Feature("Welcome to the-internet")
+@Story("Проверка элементов главной страницы")
 public class HomePageTests extends BaseTest{
 
     HomePage page = new HomePage();
 
-    @Feature("Welcome to the-internet")
-    @Story("Проверка элементов главной страницы")
     @DisplayName("Пользователь может перейти в раздел")
     @ParameterizedTest(name = "Кликнув по ссылке: \"{0}\"")
     @CsvFileSource(resources = "/files/data/homePageLinksTexts.csv")
