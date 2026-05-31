@@ -21,13 +21,11 @@ public class HomePageTests extends BaseTest{
 
     HomePage page = new HomePage();
 
-    @DisplayName("Пользователь может перейти в раздел")
-    @ParameterizedTest(name = "Кликнув по ссылке: \"{0}\"")
+    @DisplayName("Навигация по разделам главной страницы")
+    @ParameterizedTest(name = "Переход по ссылке: \"{0}\" → ожидаемый endpoint: \"{1}\"")
     @CsvFileSource(resources = "/files/data/homePageLinksTexts.csv")
     void userCanClickOnLinkFromLinksList(String linkText, String endpointText) {
-        step("Открываем The Internet.", () -> {
-            page.open();
-        });
+        step("Открываем The Internet.", page::open);
         step("Проверяем что раздел '" + linkText + "' доступен.", () -> {
             page.elementWithText(linkText).shouldBe(visible);
         });
@@ -42,8 +40,6 @@ public class HomePageTests extends BaseTest{
     @Disabled("Ресурс the-internet.herokuapp.com временно ограничил функционал страницы. " +
             "Будет исправлено в локальной сборке TheInternetHeroKuApp на localhost " +
             "в ветке feature/tinymce-stay-alive позже.")
-    @Feature("Welcome to the-internet")
-    @Story("Проверка элементов главной страницы")
     @Test
     @DisplayName("Пользователь может перейти по ссылке \"WYSIWYG Editor\"")
     void userCanClickOnWYSIWYGEditorElementsLink() {
@@ -53,7 +49,7 @@ public class HomePageTests extends BaseTest{
         step("Проверяем что раздел 'WYSIWYG Editor' доступен", () -> {
             page.wysiwygEditorLocator.shouldBe(visible);
         });
-        step("Переходим в 'Add/Remove Elements' и проверяем отображение заголовка", () -> {
+        step("Переходим в 'WYSIWYG Editor' и проверяем отображение заголовка", () -> {
             page.clickOn(page.wysiwygEditorLocator);
             page.headerLocator.shouldBe(visible);
             Assertions.assertThat(WebDriverRunner.url()).contains("/tinymce");

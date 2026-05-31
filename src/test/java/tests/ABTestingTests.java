@@ -14,14 +14,14 @@ import static pages.ABTestingPage.ATTEMPTS_FOR_STATISTICAL_CONFIDENCE;
 
 @DisplayName("Проверки раздела A/B Testing")
 @Feature("Раздел A/B Testing")
-@Story("Тестирование вариантов отображения странциы A/B Testing")
+@Story("Тестирование вариантов отображения страницы A/B Testing")
 public class ABTestingTests extends BaseTest {
 
     ABTestingPage page = new ABTestingPage();
 
     @Test
     @DisplayName("Текущая страница является одним из допустимых А/В вариантов страницы")
-    public void abTestsPageDisplayedStaticControlVersion() {
+    public void pageShouldBeValidABVariant() {
         step("Открываем страницу 'A/B Testing'", () -> page.open());
         step("Проверяем что страница является допустимым вариантом (A/B)", () -> {
             page.headerShouldHaveExpectedVariantsText();
@@ -47,7 +47,7 @@ public class ABTestingTests extends BaseTest {
     }
 
     @Disabled("Тест отключен из-за того что на странице the-internet.herokuapp.com отсутствует реализация вариантов 1 и 2, в отличие от локальной сборки.")
-    @Story("Тестирование вариантов отображения странциы A/B/ (+C) Testing по прямой ссылке")
+    @Story("Тестирование вариантов отображения страницы A/B/ (+C) Testing по прямой ссылке")
     @DisplayName("Пользователь может посмотреть варианты A/B.")
     @ParameterizedTest(name = "Раздел {0} открыт и содержит заголовок {1}.")
     @CsvSource({
@@ -59,7 +59,7 @@ public class ABTestingTests extends BaseTest {
     void someFunVariationOfABTestsCanBeDirectlyOpened(String expectedEndpoint, String expectedHeaderText) {
         step("Открываем страницу с вариантом по URL", () -> page.openByEndpoint(expectedEndpoint));
         step("Проверяем что страница '" + expectedEndpoint
-                + "' отборажает заголовок '" + expectedHeaderText + "'", () -> {
+                + "' отображает заголовок '" + expectedHeaderText + "'", () -> {
             page.headerShouldHaveExpectedText(expectedHeaderText);
         });
         step("Проверяем что открылась страница http:// ... " + expectedEndpoint, () -> {
@@ -73,7 +73,7 @@ public class ABTestingTests extends BaseTest {
     @CsvSource({
             "abtest_cookies, A/B Test Cookies",
             "abtest_manual, A/B Test Manual",
-            "/abtest, No A/B Test" //По URL с двойным слэшем выключается отабражение A/B Test.
+            "/abtest, No A/B Test" //По URL с двойным слэшем выключается отображение A/B Test.
     })
     void abTestsPageCanBeDirectlyOpened(String expectedEndpoint, String expectedHeaderText) {
         step("Открываем страницу с вариантом по URL", () -> page.openByEndpoint(expectedEndpoint));
