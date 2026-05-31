@@ -2,11 +2,14 @@ package pages;
 
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.WebDriverRunner;
 import config.TheInternetHeroKuAppConfiguration;
+import org.assertj.core.api.Assertions;
 
 import java.util.*;
 
 import static com.codeborne.selenide.Selenide.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ABTestingPage {
 
@@ -35,16 +38,38 @@ public class ABTestingPage {
         open();
     }
 
-    public boolean bothExpectedVariantsAppearWithinAttempts(int attemptsCount) {
-        //Все варианты страницы отборажаются когда перед проверкой осуществляется очистка куки файлов
-        HashMap<String, String> pageData = getSeenHeadersWithinAttempts(attemptsCount, true);
-        return Arrays.stream(AB_TESTS_HEADERS).allMatch(pageData::containsKey);
+    public ABTestingPage urlShouldHaveExpectedEndpoint(String expectedEndpoint){
+        assertThat(WebDriverRunner.url()).contains(expectedEndpoint);
+        return this;
     }
 
-    public boolean showsOnlyControlPageWithinAttempts(int attemptsCount) {
+    public ABTestingPage headerShouldHaveExpectedVariantsText(){
+        assertThat(HEADER_ELEMENT.text()).containsAnyOf(AB_TESTS_HEADERS);
+        return this;
+    }
+
+    public ABTestingPage headerShouldHaveExpectedText(String expectedHeader){
+        assertThat(HEADER_ELEMENT.text()).containsAnyOf(expectedHeader);
+        return this;
+    }
+
+    public ABTestingPage bothExpectedVariantsShouldBeAppearWithinAttempts(int attemptsCount) {
+        //Все варианты страницы отборажаются когда перед проверкой осуществляется очистка куки файлов
+        HashMap<String, String> pageData = getSeenHeadersWithinAttempts(attemptsCount, true);
+
+        assertThat(Arrays.stream(AB_TESTS_HEADERS))
+                .allMatch(pageData::containsKey);
+        return this;
+    }
+
+    public ABTestingPage shouldPresentOnlyControlPageWithinAttempts(int attemptsCount) {
         //Без чистки куки файлов отображается либо только A либо только B варианты страниц.
         HashMap<String, String> pageData = getSeenHeadersWithinAttempts(attemptsCount, false);
-        return ((pageData.size() == 1) && (pageData.containsKey(AB_TESTS_HEADERS[0]) || pageData.containsKey(AB_TESTS_HEADERS[1])));
+
+        assertThat(pageData.keySet())
+                .hasSize(1)
+                .containsAnyOf(AB_TESTS_HEADERS);
+        return this;
     }
 
     public HashMap<String, String> getSeenHeadersWithinAttempts(int maxAttempts, boolean clearCookies) {
