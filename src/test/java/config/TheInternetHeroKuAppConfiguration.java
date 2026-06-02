@@ -17,9 +17,7 @@ public class TheInternetHeroKuAppConfiguration {
     public static void initialize() {
         String selenoidRemoteURL =  System.getenv("SELENOID_REMOTE");
         String selenideBrowserType = System.getenv("SELENIDE_BROWSER");
-        boolean runOnCI = Boolean.parseBoolean(
-                System.getenv("running.ci")
-        );
+        boolean runOnCI = Boolean.parseBoolean(System.getenv("running_on_CI"));
 
         boolean runTestsOnSelenoid = Boolean.parseBoolean(
                 System.getProperty("selenoid.runOnLocalSelenoid", "false")
