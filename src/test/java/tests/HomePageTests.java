@@ -33,7 +33,22 @@ public class HomePageTests extends BaseTest{
             page.clickLinkWith(linkText);
         });
         step("Проверяем что открылась страница http:// ... " + endpointText, () -> {
-            Assertions.assertThat(WebDriverRunner.url()).contains(endpointText);
+            page.endpointShouldHave(endpointText);
+        });
+    }
+
+    @Disabled("\"Лучше медленный, но надежный тест, чем быстрый, который врет\". Данный тест сохранен в рамках " +
+            "демонстрации возможностей и понимания последствий.")
+    @DisplayName("Навигация по разделам главной страницы")
+    @ParameterizedTest(name = "Переход по ссылке: \"{0}\" → ожидаемый endpoint: \"{1}\"")
+    @CsvFileSource(resources = "/files/data/homePageLinksTexts.csv")
+    void allExamplesLinkOnHomePageIsEnabledAndVisibles(String linkText, String endpointText) {
+        step("Открываем The Internet.", page::open);
+        step("Проверяем что раздел '" + linkText + "' доступен.", () -> {
+            page.elementWithText(linkText).shouldBe(visible);
+        });
+        step("Проверяем что ссылка '" + linkText + "' отображается и по ней можно перейти", () -> {
+            page.linkShouldBeEnabled(linkText);
         });
     }
 

@@ -30,8 +30,8 @@ public class BaseTest {
         }
     }
 
-    @AfterEach
-    void addAttachments() {
-        Attachments.addScreenshot();
-    }
+//    @AfterEach
+//    void addAttachments() {
+//        Attachments.addScreenshot();
+//    }
 }

@@ -22,7 +22,7 @@ public class ABTestingPage {
     public final String[] AB_TESTS_LOCAL_HEADERS = {CONTROL_PAGE_HEADER, VARIANT_1_PAGE_HEADER, VARIANT_2_PAGE_HEADER};
 
     public final SelenideElement HEADER_ELEMENT = $(".example h3");
-    public final String PAGE_ENDPOINT = "abtest";
+    public final String PAGE_ENDPOINT = "/abtest";
 
     public ABTestingPage open() {
         Selenide.open(TheInternetHeroKuAppConfiguration.BASE_URL + PAGE_ENDPOINT);
