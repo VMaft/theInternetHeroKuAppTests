@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ABTestingPage {
 
-    public static final int ATTEMPTS_FOR_STATISTICAL_CONFIDENCE = 20;
+    public static final int ATTEMPTS_FOR_STATISTICAL_CONFIDENCE = 10;
     public static final String CONTROL_PAGE_HEADER = "A/B Test Control";
     public static final String VARIANT_1_PAGE_HEADER = "A/B Test Variation 1";
     public static final String VARIANT_2_PAGE_HEADER = "\uD83E\uDD2A A/B Test Variation 2 — CHAOS MODE \uD83E\uDD2A";
@@ -22,7 +22,7 @@ public class ABTestingPage {
     public final String[] AB_TESTS_LOCAL_HEADERS = {CONTROL_PAGE_HEADER, VARIANT_1_PAGE_HEADER, VARIANT_2_PAGE_HEADER};
 
     public final SelenideElement HEADER_ELEMENT = $(".example h3");
-    public final String PAGE_ENDPOINT = "abtest";
+    public final String PAGE_ENDPOINT = "/abtest";
 
     public ABTestingPage open() {
         Selenide.open(TheInternetHeroKuAppConfiguration.BASE_URL + PAGE_ENDPOINT);

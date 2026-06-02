@@ -1,9 +1,8 @@
 package pages;
 
-import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.*;
 import config.TheInternetHeroKuAppConfiguration;
+import org.assertj.core.api.Assertions;
 import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Selectors.byText;
@@ -136,6 +135,19 @@ public class HomePage {
 
     public HomePage clickLinkWith(String elementText){
         elementWithText(elementText).click();
+        return this;
+    }
+
+    public HomePage linkShouldBeEnabled(String elementText){
+        elementWithText(elementText)
+                .shouldBe(Condition.visible)
+                .shouldBe(Condition.enabled)
+                .shouldBe(Condition.clickable);
+        return this;
+    }
+
+    public HomePage endpointShouldHave(String endpointText) {
+        Assertions.assertThat(WebDriverRunner.url()).contains(endpointText);
         return this;
     }
 }

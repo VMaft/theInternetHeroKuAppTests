@@ -1,6 +1,7 @@
 package tests;
 
 import com.codeborne.selenide.WebDriverRunner;
+import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import org.assertj.core.api.Assertions;
@@ -29,11 +30,33 @@ public class HomePageTests extends BaseTest{
         step("Проверяем что раздел '" + linkText + "' доступен.", () -> {
             page.elementWithText(linkText).shouldBe(visible);
         });
-        step("Переходим в раздел '" + linkText + "' и проверяем что открылась нужная страница.", () -> {
+        step("Переходим в раздел '" + linkText + "'", () -> {
             page.clickLinkWith(linkText);
         });
         step("Проверяем что открылась страница http:// ... " + endpointText, () -> {
-            Assertions.assertThat(WebDriverRunner.url()).contains(endpointText);
+            page.endpointShouldHave(endpointText);
+        });
+    }
+
+    @Disabled("\"Лучше медленный, но надежный тест, чем быстрый, который врет\". Данный тест сохранен в рамках " +
+            "демонстрации возможностей и понимания последствий.")
+    @Description("""
+            Тест задумывался как более быстрая альтернатива основному тесту покрывающему бизнес проверки The-internet-herokuapp.com.
+            Реализация теста включала:
+                1. Проверка разделов только по названию на главной странице (без навигации внутрь).
+                2. Проверка UI-состояния ссылок (visible, enabled, clickable) вместо перехода по URL и проверки эндпоинтов.
+            Результат: Экономия в 20 секунд не релевантна отностительно проверок основного теста.\s
+           \s""")
+    @DisplayName("Навигация по разделам главной страницы")
+    @ParameterizedTest(name = "Переход по ссылке: \"{0}\" → ожидаемый endpoint: \"{1}\"")
+    @CsvFileSource(resources = "/files/data/homePageLinksTexts.csv")
+    void allExamplesLinkOnHomePageIsEnabledAndVisibles(String linkText, String endpointText) {
+        step("Открываем The Internet.", page::open);
+        step("Проверяем что раздел '" + linkText + "' доступен.", () -> {
+            page.elementWithText(linkText).shouldBe(visible);
+        });
+        step("Проверяем что ссылка '" + linkText + "' отображается и по ней можно перейти", () -> {
+            page.linkShouldBeEnabled(linkText);
         });
     }
 

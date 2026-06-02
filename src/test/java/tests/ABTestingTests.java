@@ -71,9 +71,9 @@ public class ABTestingTests extends BaseTest {
     @DisplayName("Пользователь может посмотреть варианты A/B.")
     @ParameterizedTest(name = "Раздел {0} открыт и содержит заголовок {1}.")
     @CsvSource({
-            "abtest_cookies, A/B Test Cookies",
-            "abtest_manual, A/B Test Manual",
-            "/abtest, No A/B Test" //По URL с двойным слэшем выключается отображение A/B Test.
+            "/abtest_cookies, A/B Test Cookies",
+            "/abtest_manual, A/B Test Manual",
+            "//abtest, No A/B Test" //По URL с двойным слэшем выключается отображение A/B Test.
     })
     void abTestsPageCanBeDirectlyOpened(String expectedEndpoint, String expectedHeaderText) {
         step("Открываем страницу с вариантом по URL", () -> page.openByEndpoint(expectedEndpoint));
