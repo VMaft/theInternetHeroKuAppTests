@@ -1,6 +1,7 @@
 package tests;
 
 import com.codeborne.selenide.WebDriverRunner;
+import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import org.assertj.core.api.Assertions;
@@ -39,6 +40,12 @@ public class HomePageTests extends BaseTest{
 
     @Disabled("\"Лучше медленный, но надежный тест, чем быстрый, который врет\". Данный тест сохранен в рамках " +
             "демонстрации возможностей и понимания последствий.")
+    @Description("""
+            Данный тест задумывался как более быстрая альтернатива основному тесту покрывающему бизнес проверки The-internet-herokuapp.com
+                1. Вместо перехода по разделам - проверка наличия разделов на главной странице по имени.
+                2. Вместо проверки перехода по href и проверки по эндпоинтов - проверка visible, enabled, clickable самих href.
+            Результат: Экономия в 20 секунд не релевантна отностительно основного теста.\s
+           \s""")
     @DisplayName("Навигация по разделам главной страницы")
     @ParameterizedTest(name = "Переход по ссылке: \"{0}\" → ожидаемый endpoint: \"{1}\"")
     @CsvFileSource(resources = "/files/data/homePageLinksTexts.csv")
