@@ -25,7 +25,7 @@ public class DigestAuthorizationTests extends BaseTest {
                     !EnvironmentInfo.isRemoteTestRun(),
                     () -> String.format(
                             "Digest Auth тесты пропущены. Окружение: CI=%s, Selenoid=%s",
-                            System.getProperty("running.ci"),
+                            System.getenv("RUNNING_ON_CI"),
                             System.getProperty("selenoid.runOnLocalSelenoid")
                     )
             );
