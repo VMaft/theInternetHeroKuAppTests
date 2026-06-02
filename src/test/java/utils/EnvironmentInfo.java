@@ -9,7 +9,7 @@ package utils;
  * </ul>
  */
 public class EnvironmentInfo {
-    private static final String PROP_CI = "running.ci";
+    private static final String PROP_CI = "RUNNING_ON_CI";
     private static final String PROP_SELENOID = "selenoid.runOnLocalSelenoid";
 
     /**
@@ -17,6 +17,6 @@ public class EnvironmentInfo {
      *         false для локального запуска с полноценным CDP
      */
     public static boolean isRemoteTestRun() {
-        return (System.getProperty(PROP_CI) != null || System.getProperty(PROP_SELENOID) != null);
+        return (System.getenv(PROP_CI) != null || System.getProperty(PROP_SELENOID) != null);
     }
 }
