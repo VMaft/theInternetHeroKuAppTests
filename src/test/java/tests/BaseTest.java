@@ -5,7 +5,6 @@ import com.codeborne.selenide.logevents.SelenideLogger;
 import config.TheInternetHeroKuAppConfiguration;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import utils.Attachments;
 
@@ -22,7 +21,6 @@ public class BaseTest {
     static void afterAll() {
         try {
             String sessionID = String.valueOf(WebDriverRunner.driver().getSessionId());
-
             Attachments.attachVideoAsHtmlLink(sessionID);
             getWebDriver().close();
         } catch (Exception e) {

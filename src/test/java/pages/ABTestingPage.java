@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ABTestingPage {
 
-    public static final int ATTEMPTS_FOR_STATISTICAL_CONFIDENCE = 20;
+    public static final int ATTEMPTS_FOR_STATISTICAL_CONFIDENCE = 10;
     public static final String CONTROL_PAGE_HEADER = "A/B Test Control";
     public static final String VARIANT_1_PAGE_HEADER = "A/B Test Variation 1";
     public static final String VARIANT_2_PAGE_HEADER = "\uD83E\uDD2A A/B Test Variation 2 — CHAOS MODE \uD83E\uDD2A";

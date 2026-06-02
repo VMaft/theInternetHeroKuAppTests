@@ -1,7 +1,6 @@
 package tests;
 
 import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.WebDriverRunner;
 import config.TheInternetHeroKuAppConfiguration;
 import io.qameta.allure.Description;
 import io.qameta.allure.Story;
@@ -27,7 +26,6 @@ public class BasicAuthorizationTests extends BaseTest {
 
     @AfterEach
     void closeWebDriver() {
-        System.out.println("\n\nsessionID:" + String.valueOf(WebDriverRunner.driver().getSessionId()) + "\n\n");
         step("Закрываем WebDriverRunner для обновления конфигурации", Selenide::closeWebDriver);
     }
 
