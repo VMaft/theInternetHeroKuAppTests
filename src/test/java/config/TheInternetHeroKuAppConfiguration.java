@@ -2,6 +2,7 @@ package config;
 
 import com.codeborne.selenide.Configuration;
 import org.openqa.selenium.chrome.ChromeOptions;
+import utils.EnvironmentInfo;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,42 +16,44 @@ public class TheInternetHeroKuAppConfiguration {
     //public static final String BASE_URL = "http://localhost:7088";
 
     public static void initialize() {
-        String selenoidRemoteURL =  System.getenv("SELENOID_REMOTE");
-        String selenideBrowserType = System.getenv("SELENIDE_BROWSER");
-        boolean runOnCI = Boolean.parseBoolean(System.getenv("RUNNING_ON_CI"));
-
-        boolean runTestsOnSelenoid = Boolean.parseBoolean(
-                System.getProperty("selenoid.runOnLocalSelenoid", "false")
-        );
+        boolean runOnCI = EnvironmentInfo.isCIRun();
+        boolean runOnSelenoid = EnvironmentInfo.isLocalSelenoidRun();
 
         if(runOnCI){
-            if (selenoidRemoteURL == null) {
-                selenoidRemoteURL = System.getProperty("selenoid.url");
-                if (selenoidRemoteURL != null) {
-                    System.out.println("##teamcity[message text='Environment variable 'SELENOID_REMOTE' is null or empty.' status='WARNING']");
-                    System.out.println("##teamcity[message text='Getting Selenoid.URL from commandline calling parameters. Value: " + selenoidRemoteURL + "' status='NORMAL']");
-                }
-            }
-            if (selenideBrowserType == null) {
-                selenideBrowserType = System.getProperty("browser");
-                if (selenideBrowserType != null) {
-                    System.out.println("##teamcity[message text='WARNING: Environment variable 'SELENIDE_BROWSER' is null or empty.' status='WARNING']");
-                    System.out.println("##teamcity[message text='Get BROWSER from commandline calling parameters. Value: " + selenideBrowserType + "' status='NORMAL']");
-                }
-            }
-
-            if (selenoidRemoteURL != null && selenideBrowserType != null) {
-                setupRemoteConfiguration(selenoidRemoteURL, selenideBrowserType);
-                System.out.println("========== Running tests in CI ==========");
-            } else {
-                System.out.println("Can't run test on CI. Check CommandLine arguments of CI test call.");
-                throw new IllegalArgumentException(String.format(
-                        "Failed to configure startup. A value [running.ci = %s] was passed from CI for which no " +
-                                "values were defined for: [selenideBrowserType: %s], [selenoidRemoteURL: %s] "
-                        , runOnCI, selenideBrowserType, selenoidRemoteURL));
-            }
+            setupCIConfiguration(runOnCI);
         } else {
-            setupLocalConfiguration(runTestsOnSelenoid);
+            setupLocalConfiguration(runOnSelenoid);
+        }
+    }
+
+    private static void setupCIConfiguration(boolean runOnCI) {
+        String selenoidRemoteURL =  System.getenv("SELENOID_REMOTE");
+        String selenideBrowserType = System.getenv("SELENIDE_BROWSER");
+
+        if (selenoidRemoteURL == null) {
+            selenoidRemoteURL = System.getProperty("selenoid.url");
+            if (selenoidRemoteURL != null) {
+                System.out.println("##teamcity[message text='Environment variable 'SELENOID_REMOTE' is null or empty.' status='WARNING']");
+                System.out.println("##teamcity[message text='Getting Selenoid.URL from commandline calling parameters. Value: " + selenoidRemoteURL + "' status='NORMAL']");
+            }
+        }
+        if (selenideBrowserType == null) {
+            selenideBrowserType = System.getProperty("browser");
+            if (selenideBrowserType != null) {
+                System.out.println("##teamcity[message text='WARNING: Environment variable 'SELENIDE_BROWSER' is null or empty.' status='WARNING']");
+                System.out.println("##teamcity[message text='Get BROWSER from commandline calling parameters. Value: " + selenideBrowserType + "' status='NORMAL']");
+            }
+        }
+
+        if (selenoidRemoteURL != null && selenideBrowserType != null) {
+            setupRemoteConfiguration(selenoidRemoteURL, selenideBrowserType);
+            System.out.println("========== Running tests in CI ==========");
+        } else {
+            System.out.println("Can't run test on CI. Check CommandLine arguments of CI test call.");
+            throw new IllegalArgumentException(String.format(
+                    "Failed to configure startup. A value [running.ci = %s] was passed from CI for which no " +
+                            "values were defined for: [selenideBrowserType: %s], [selenoidRemoteURL: %s] "
+                    , runOnCI, selenideBrowserType, selenoidRemoteURL));
         }
     }
 
