@@ -2,6 +2,7 @@ package config;
 
 import com.codeborne.selenide.Configuration;
 import org.openqa.selenium.chrome.ChromeOptions;
+import utils.EnvironmentInfo;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,15 +16,13 @@ public class TheInternetHeroKuAppConfiguration {
     //public static final String BASE_URL = "http://localhost:7088";
 
     public static void initialize() {
-        String selenoidRemoteURL =  System.getenv("SELENOID_REMOTE");
-        String selenideBrowserType = System.getenv("SELENIDE_BROWSER");
-        boolean runOnCI = Boolean.parseBoolean(System.getenv("RUNNING_ON_CI"));
-
-        boolean runTestsOnSelenoid = Boolean.parseBoolean(
-                System.getProperty("selenoid.runOnLocalSelenoid", "false")
-        );
+        boolean runOnCI = EnvironmentInfo.isCIRun();
+        boolean runOnSelenoid = EnvironmentInfo.isLocalSelenoidRun();
 
         if(runOnCI){
+            String selenoidRemoteURL =  System.getenv("SELENOID_REMOTE");
+            String selenideBrowserType = System.getenv("SELENIDE_BROWSER");
+
             if (selenoidRemoteURL == null) {
                 selenoidRemoteURL = System.getProperty("selenoid.url");
                 if (selenoidRemoteURL != null) {
@@ -50,7 +49,7 @@ public class TheInternetHeroKuAppConfiguration {
                         , runOnCI, selenideBrowserType, selenoidRemoteURL));
             }
         } else {
-            setupLocalConfiguration(runTestsOnSelenoid);
+            setupLocalConfiguration(runOnSelenoid);
         }
     }
 

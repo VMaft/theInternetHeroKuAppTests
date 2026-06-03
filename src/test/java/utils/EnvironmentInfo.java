@@ -14,9 +14,29 @@ public class EnvironmentInfo {
 
     /**
      * @return true если тесты запущены в удаленном окружении (CI или Selenoid),
-     *         false для локального запуска с полноценным CDP
+     *         false для локального запуска
      */
     public static boolean isRemoteTestRun() {
-        return (System.getenv(PROP_CI) != null || System.getProperty(PROP_SELENOID) != null);
+        return Boolean.parseBoolean(System.getenv(PROP_CI)) || Boolean.parseBoolean(System.getProperty(PROP_SELENOID));
+    }
+
+    /**
+     * @return true если тесты запущены в удаленном окружении (CI),
+     *         false для локального запуска
+     *
+     * PROP_CI - переменная окружения определяемая на CI (TeamCity).
+     */
+    public static boolean isCIRun(){
+        return Boolean.parseBoolean(System.getenv(PROP_CI));
+    }
+
+    /**
+     * @return true если тесты запущены из локального окружения на Selenoid,
+     *         false для локального запуска с локальным браузером
+     *
+     * PROP_SELENOID - локальный System.Property который устанавливается из GradleTask в BuildGradle.
+     */
+    public static boolean isLocalSelenoidRun(){
+        return Boolean.parseBoolean(System.getProperty(PROP_SELENOID));
     }
 }
