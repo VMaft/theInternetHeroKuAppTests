@@ -19,17 +19,16 @@ public class Attachments extends TheInternetHeroKuAppConfiguration {
     @Attachment(value = "Screenshot", type = "image/png", fileExtension = "png")
     public static byte[] addScreenshot() {
         boolean hasWebDriver = WebDriverRunner.hasWebDriverStarted();
-        System.out.println("addAttachments: hasWebDriver = " + hasWebDriver);
 
         if (hasWebDriver) {
             try {
-                System.out.println("Скриншот успешно добавлен");
+                System.out.println("Скриншот успешно добавлен!");
                 return ((TakesScreenshot) WebDriverRunner.getWebDriver()).getScreenshotAs(OutputType.BYTES);
             } catch (Exception e) {
                 System.err.println("Ошибка при создании скриншота: " + e.getMessage());
             }
         } else {
-            System.out.println("WebDriver не активен, скриншот пропущен");
+            System.out.println("WebDriver не активен, скриншот пропущен.");
         }
         return createErrorImage("WebDriver is not active!\nScreenshot cannot be taken.");
     }
