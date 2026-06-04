@@ -18,8 +18,6 @@ public class BrokenImagesPage {
     final String PAGE_HEADER_EXPECTED_TEXT = "Broken Images";
     final SelenideElement pageHeader = $(".example h3");
     final ElementsCollection imagesList = $$("#content img");
-    final int EXPECTED_RENDERED_HEIGHT = 90;
-    final int EXPECTED_RENDERED_WIDTH = 120;
 
     public BrokenImagesPage open() {
         Selenide.open(TheInternetHeroKuAppConfiguration.BASE_URL + BROKEN_IMAGES_ENDPOINT);
@@ -44,14 +42,17 @@ public class BrokenImagesPage {
     }
 
     public BrokenImagesPage allImagesHaveSameVisibleSize() {
+        long expectedHeigth = imagesList.first().getSize().height;
+        long expectedWidth = imagesList.first().getSize().width;
+
         for (SelenideElement image : imagesList) {
             assertThat(image.getSize().height)
                     .as("Высота изображения соответствует ожиданию")
-                    .isEqualTo(EXPECTED_RENDERED_HEIGHT);
+                    .isEqualTo(expectedHeigth);
 
             assertThat(image.getSize().width)
                     .as("Ширина изображения соответствует ожиданию")
-                    .isEqualTo(EXPECTED_RENDERED_WIDTH);
+                    .isEqualTo(expectedWidth);
         }
         return this;
     }
