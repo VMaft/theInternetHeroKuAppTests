@@ -3,7 +3,9 @@ package tests;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import pages.ChallengingDomPage;
 
@@ -15,12 +17,16 @@ import static io.qameta.allure.Allure.step;
 public class ChallengingDomTests extends BaseTest {
     ChallengingDomPage page = new ChallengingDomPage();
 
+    @BeforeEach
+    void setUp() {
+        step("Открываем страницу 'Challenging DOM'", page::open);
+    }
+
     @Test
     @Feature("Валидация страницы 'Challenging DOM'")
     @DisplayName("На странице 'Challenging DOM' все элементы загружены и отображаются")
     void challengingPageLoadedAndValid() {
-        step("Открываем страницу 'Challenging DOM'", page::open);
-        step("Проверяем что все элементы страницы загружены", page::shouldBeValid);
+        step("Проверяем что все элементы страницы загружены", page::shouldHaveAllElementsDisplayed);
     }
 
     @Test()
@@ -32,7 +38,6 @@ public class ChallengingDomTests extends BaseTest {
             страницы.
             """)
     void clickOnPageButtonsUpdatingCanvas() {
-        step("Открываем страницу 'Challenging DOM'", page::open);
         step("Проверяем клик на клавиши меняет Canvas", page::buttonsClickUpdatingCanvas);
     }
 
@@ -40,7 +45,6 @@ public class ChallengingDomTests extends BaseTest {
     @Feature("Тестирование таблицы")
     @DisplayName("Проверяем что таблица не пустая и полностью заполнена.")
     void tableElementsContainsData() {
-        step("Открываем страницу 'Challenging DOM'", page::open);
         step("Проверяем что таблица содержит как минимум одну строку'", page::verifyTableNotEmpty);
         step("Проверяем что все ячейки таблицы заполнены и содержат текст", page::allTableCellsContainsData);
     }
@@ -52,12 +56,11 @@ public class ChallengingDomTests extends BaseTest {
             В рамках теста проверяется взаимодействие с ссылками <a href> в последней столбце/ячейки таблицы.
             """)
     void userEditAndDeleteRowsByItsIndex() {
-        step("Открываем страницу 'Challenging DOM'", page::open);
         step("Проверяем что пользователь может нажать на ссылку edit определенной строки таблицы", () -> {
-            page.editTableRowWithIndex(3);
+            page.editTableRowWithIndex(page.randomIndex());
         });
         step("Проверяем что пользователь может нажать на ссылку delete определенной строки таблицы", () -> {
-                    page.deleteTableRowWithIndex(9);
+                    page.deleteTableRowWithIndex(page.randomIndex());
                 }
         );
     }

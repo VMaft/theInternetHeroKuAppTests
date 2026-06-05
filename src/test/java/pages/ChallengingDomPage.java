@@ -9,6 +9,7 @@ import org.openqa.selenium.By;
 import utils.Attachments;
 
 import java.util.List;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,6 +19,7 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.shouldHaveThrown;
 
 public class ChallengingDomPage {
     final String PAGE_ENDPOINT = "/challenging_dom";
@@ -47,7 +49,7 @@ public class ChallengingDomPage {
         return this;
     }
 
-    public ChallengingDomPage shouldBeValid() {
+    public ChallengingDomPage shouldHaveAllElementsDisplayed() {
         header.shouldHave(text(EXPECTED_HEADER_TEXT));
         table.shouldBe(visible);
         canvas.shouldBe(visible);
@@ -66,19 +68,23 @@ public class ChallengingDomPage {
     }
 
     public ChallengingDomPage verifyTableNotEmpty() {
-        tableRows.shouldHave(sizeGreaterThan(1)); // Хотя бы одна строка данных
+        tableRows.shouldHave(sizeGreaterThan(0)); // Хотя бы одна строка данных
         return this;
     }
 
     public ChallengingDomPage allTableCellsContainsData() {
         for (SelenideElement row : tableRows) {
             for (SelenideElement cell : row.$$("td")) {
-                assertThat(cell.text()).isNotNull();
+                assertThat(cell.text()).isNotBlank();
             }
         }
         return this;
     }
 
+    /**
+     * Возвращает текст, который рендерится на canvas через strokeText().
+     * Реализация через парсинг page source, т.к. canvas не имеет DOM-свойств с текстом.
+     */
     public String getCanvasText() {
         String pageSource = WebDriverRunner.getWebDriver().getPageSource();
         Pattern pattern = Pattern.compile("strokeText\\(['\"]([^'\"]+)['\"]");
@@ -92,10 +98,12 @@ public class ChallengingDomPage {
 
     public void editTableRowWithIndex(int rowIndex) {
         clickTableButtonInRowWithIndex(rowIndex, editLinkText, EDIT_BUTTON_ENDPOINT);
+        System.out.println("Edit rowIndex: " + rowIndex);
     }
 
     public void deleteTableRowWithIndex(int rowIndex) {
         clickTableButtonInRowWithIndex(rowIndex, deleteLinkText, DELETE_BUTTON_ENDPOINT);
+        System.out.println("Delete rowIndex: " + rowIndex);
     }
 
     // При нажатии на ссылки 'Edit' или 'Delete' в строке, добавляет к URL эндпоинт страницы без редиректа.
@@ -109,7 +117,7 @@ public class ChallengingDomPage {
         SelenideElement tableRow = tableRows.get(rowIndex - 1);
 
         tableRow.$(By.linkText(buttonText)).click();
-        assertThat(WebDriverRunner.driver().url()).contains(expectedEndpoint);
+        assertThat(WebDriverRunner.driver().url()).endsWith(expectedEndpoint);
 
         //Attachments.attachRowAsHtml(tableRow, tableHeaders);
         attachSelectedRowInfo(tableRow);
@@ -135,11 +143,19 @@ public class ChallengingDomPage {
             );
         }
         if (rowIndex > tableRows.size()) throw new IllegalArgumentException(
-                String.format("Rows Index is incorrect. Index can't be more than table rows count." +
-                                "\nrowsIndex: [%s]. " +
-                                "\ntableRowsCount: [%s]"
+                String.format("""
+                                Rows Index is incorrect. Index can't be more than table rows count.\
+                                
+                                rowsIndex: [%s]. \
+                                
+                                tableRowsCount: [%s]"""
                         , rowIndex, tableRows.size()
                 )
         );
+    }
+
+    public int randomIndex() {
+        verifyTableNotEmpty();
+        return new Random().nextInt(tableRows.size()) + 1;
     }
 }
