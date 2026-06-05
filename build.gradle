@@ -20,6 +20,7 @@ dependencies {
     testImplementation ('org.junit.platform:junit-platform-suite:1.11.0')
     testImplementation("org.assertj:assertj-core:4.0.0-M1")
     testImplementation 'org.slf4j:slf4j-simple:2.0.13'
+    implementation 'net.sourceforge.tess4j:tess4j:5.19.0'
 }
 
 allure {

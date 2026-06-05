@@ -12,9 +12,9 @@ import pages.ABTestingPage;
 import static io.qameta.allure.Allure.step;
 import static pages.ABTestingPage.ATTEMPTS_FOR_STATISTICAL_CONFIDENCE;
 
-@DisplayName("Проверки раздела A/B Testing")
+@DisplayName("Проверки раздела 'A/B Testing'")
 @Feature("Раздел A/B Testing")
-@Story("Тестирование вариантов отображения страницы A/B Testing")
+@Story("Тестирование вариантов отображения страницы 'A/B Testing'")
 public class ABTestingTests extends BaseTest {
 
     ABTestingPage page = new ABTestingPage();
@@ -22,7 +22,7 @@ public class ABTestingTests extends BaseTest {
     @Test
     @DisplayName("Текущая страница является одним из допустимых А/В вариантов страницы")
     public void pageShouldBeValidABVariant() {
-        step("Открываем страницу 'A/B Testing'", () -> page.open());
+        step("Открываем страницу 'A/B Testing'", page::open);
         step("Проверяем что страница является допустимым вариантом (A/B)", () -> {
             page.headerShouldHaveExpectedVariantsText();
         });
@@ -31,7 +31,7 @@ public class ABTestingTests extends BaseTest {
     @Test
     @DisplayName("Проверка динамического отображения вариантов страницы со сбросом cookies")
     public void abTestsBothVariantsAreAvailableWhenClearingCookies() {
-        step("Открываем страницу 'A/B Testing'", () -> page.open());
+        step("Открываем страницу 'A/B Testing'", page::open);
         step("Проверяем что пользователь может увидеть А и В варианты страниц", () -> {
             page.bothExpectedVariantsShouldBeAppearWithinAttempts(ATTEMPTS_FOR_STATISTICAL_CONFIDENCE);
         });
@@ -40,7 +40,7 @@ public class ABTestingTests extends BaseTest {
     @Test
     @DisplayName("Проверка статичного отображения текста и заголовка страницы без сброса cookies")
     public void abTestsPageDisplayedStaticControlVersionWithoutClearingCookies() {
-        step("Открываем страницу 'A/B Testing'", () -> page.open());
+        step("Открываем страницу 'A/B Testing'", page::open);
         step("Проверяем отображение только контрольной страница за " + ATTEMPTS_FOR_STATISTICAL_CONFIDENCE + " запусков", () -> {
             page.shouldPresentOnlyControlPageWithinAttempts(ATTEMPTS_FOR_STATISTICAL_CONFIDENCE);
         });

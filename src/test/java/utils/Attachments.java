@@ -1,5 +1,7 @@
 package utils;
 
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
 import config.TheInternetHeroKuAppConfiguration;
 import io.qameta.allure.Allure;
@@ -19,17 +21,16 @@ public class Attachments extends TheInternetHeroKuAppConfiguration {
     @Attachment(value = "Screenshot", type = "image/png", fileExtension = "png")
     public static byte[] addScreenshot() {
         boolean hasWebDriver = WebDriverRunner.hasWebDriverStarted();
-        System.out.println("addAttachments: hasWebDriver = " + hasWebDriver);
 
         if (hasWebDriver) {
             try {
-                System.out.println("Скриншот успешно добавлен");
+                System.out.println("Скриншот успешно добавлен!");
                 return ((TakesScreenshot) WebDriverRunner.getWebDriver()).getScreenshotAs(OutputType.BYTES);
             } catch (Exception e) {
                 System.err.println("Ошибка при создании скриншота: " + e.getMessage());
             }
         } else {
-            System.out.println("WebDriver не активен, скриншот пропущен");
+            System.out.println("WebDriver не активен, скриншот пропущен.");
         }
         return createErrorImage("WebDriver is not active!\nScreenshot cannot be taken.");
     }
@@ -135,5 +136,34 @@ public class Attachments extends TheInternetHeroKuAppConfiguration {
 
     private static boolean isCiRun() {
         return System.getenv("TEAMCITY_VERSION") != null;
+    }
+
+    @Attachment(value = "{attachmentName}", type = "text/plain")
+    public static String attachTextToAllure(String attachmentName, String content) {
+        return content;
+    }
+
+    @Attachment(value = "Table Row", type = "text/html;charset=UTF-8")
+    public static String attachRowAsHtml(SelenideElement tableRow, ElementsCollection tableHeaders) {
+        StringBuilder html = new StringBuilder();
+        html.append("<table border='1' cellpadding='5' style='border-collapse: collapse;'>");
+        html.append("<tr style='background-color: #f2f2f2;'>");
+
+        // Можно добавить заголовки, если знаешь
+        // html.append("<th>Column 1</th><th>Column 2</th><th>Column 3</th>");
+
+        //tableColumns
+        html.append("<tr>");
+        for (SelenideElement header : tableHeaders) {
+            html.append("<th>").append(header.text()).append("</th>");
+        }
+        html.append("</tr>");
+
+        for (SelenideElement cell : tableRow.$$("td")) {
+            html.append("<td>").append(cell.text()).append("</td>");
+        }
+
+        html.append("</tr></table>");
+        return html.toString();
     }
 }

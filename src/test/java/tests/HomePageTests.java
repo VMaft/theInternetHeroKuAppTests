@@ -15,7 +15,7 @@ import pages.HomePage;
 import static com.codeborne.selenide.Condition.visible;
 import static io.qameta.allure.Allure.step;
 
-@DisplayName("Проверки главной страницы The-Internet")
+@DisplayName("Проверки главной страницы 'The-Internet'")
 @Feature("Welcome to the-internet")
 @Story("Проверка элементов главной страницы")
 public class HomePageTests extends BaseTest{
@@ -50,7 +50,7 @@ public class HomePageTests extends BaseTest{
     @DisplayName("Навигация по разделам главной страницы")
     @ParameterizedTest(name = "Переход по ссылке: \"{0}\" → ожидаемый endpoint: \"{1}\"")
     @CsvFileSource(resources = "/files/data/homePageLinksTexts.csv")
-    void allExamplesLinkOnHomePageIsEnabledAndVisibles(String linkText, String endpointText) {
+    void allExamplesLinkOnHomePageIsEnabledAndVisibles(String linkText) {
         step("Открываем The Internet.", page::open);
         step("Проверяем что раздел '" + linkText + "' доступен.", () -> {
             page.elementWithText(linkText).shouldBe(visible);
