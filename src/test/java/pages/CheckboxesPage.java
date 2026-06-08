@@ -10,18 +10,19 @@ import static com.codeborne.selenide.Selenide.*;
 import static org.assertj.core.api.Assertions.*;
 
 public class CheckboxesPage {
-    final String headerExpectedText = "Checkboxes";
-    final String endpoint = "/checkboxes";
+    final String HEADER_EXPECTED_TEXT = "Checkboxes";
+    final String ENDPOINT = "/checkboxes";
     final ElementsCollection checkboxesList = $$("input[type='checkbox']");
     final SelenideElement header = $("h3");
 
     public CheckboxesPage open() {
-        Selenide.open(TheInternetHeroKuAppConfiguration.BASE_URL + endpoint);
+        Selenide.open(TheInternetHeroKuAppConfiguration.BASE_URL + ENDPOINT);
         return this;
     }
 
+    // Упрощено название метода для вызова в теле тестов: page.shouldBeValid()
     public CheckboxesPage shouldBeValid() {
-        Allure.step("Текст заголовка: " + headerExpectedText, () -> header.shouldHave(text(headerExpectedText)));
+        Allure.step("Текст заголовка: " + HEADER_EXPECTED_TEXT, () -> header.shouldHave(text(HEADER_EXPECTED_TEXT)));
         Allure.step("Есть хотя бы один чек-бокс", () -> checkboxesList.shouldHave(
                 CollectionCondition.sizeGreaterThanOrEqual(1)));
         Allure.step("Чек-бокс отображается на странице", () -> {
