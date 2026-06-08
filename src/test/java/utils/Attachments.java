@@ -15,9 +15,21 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Attachments extends TheInternetHeroKuAppConfiguration {
-
+    /**
+     * Создаёт скриншот текущей страницы и прикрепляет его к Allure-отчёту.
+     * <p>
+     * Если WebDriver не активен или произошла ошибка при создании скриншота,
+     * возвращает PNG-изображение с текстом ошибки.
+     * </p>
+     *
+     * @return массив байтов скриншота в формате PNG или изображение с текстом ошибки
+     *
+     * @see io.qameta.allure.Attachment
+     */
     @Attachment(value = "Screenshot", type = "image/png", fileExtension = "png")
     public static byte[] addScreenshot() {
         boolean hasWebDriver = WebDriverRunner.hasWebDriverStarted();
@@ -35,6 +47,12 @@ public class Attachments extends TheInternetHeroKuAppConfiguration {
         return createErrorImage("WebDriver is not active!\nScreenshot cannot be taken.");
     }
 
+    /**
+     * Создает PNG-изображение с визуализацией сообщения об ошибке.
+     *
+     * @param errorMessage сообщение об ошибке (поддерживает перенос строк \n)
+     * @return байты PNG-изображения или пустой массив при ошибке
+     */
     private static byte[] createErrorImage(String errorMessage) {
         try {
             int width = 600;
@@ -80,6 +98,40 @@ public class Attachments extends TheInternetHeroKuAppConfiguration {
         }
     }
 
+    /**
+     * Добавить текст с логгированием (и в консоль, и в AllureReport)
+     * @param name название вложения
+     * @param content текст
+     */
+    public static void attachTextAndLog(String name, String content) {
+        System.out.println(String.format("[ATTACH] %s: %s", name, content));
+        Allure.addAttachment(name, "text/plain", content);
+    }
+
+    /**
+     * Добавить текст с автоматическим добавлением времени
+     * @param name название вложения
+     * @param content текст
+     */
+    public static void attachTextWithTimestamp(String name, String content) {
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss.SSS"));
+        String fullName = String.format("[%s] %s", timestamp, name);
+        Allure.addAttachment(fullName, "text/plain", content);
+    }
+
+    /**
+     * Добавить текстовое вложение в AllureReport
+     * @param name название вложения
+     * @param content текст
+     */
+    public static void attachText(String name, String content) {
+        Allure.addAttachment(name, "text/plain", content);
+    }
+
+    /**
+     * Добавить видео как HTML ссылку во вложение в AllureReport
+     * @param sessionId строковое представление ID сессии текущего WebDriverRunner
+     */
     @Attachment(value = "Видео выполнения теста", type = "text/html", fileExtension = ".html")
     public static String attachVideoAsHtmlLink(String sessionId) {
         System.out.println("Проверяем наличие активной сессии WebDriverRunner.");
@@ -109,8 +161,11 @@ public class Attachments extends TheInternetHeroKuAppConfiguration {
         }
     }
 
+    /**
+     * Классическое решение по добавлению видео захвата экрана в AllureReport
+     */
     public static void downloadAndAttachVideoFromSelenoid() {
-        if (isCiRun()) {
+        if (EnvironmentInfo.isCIRun()) {
             String sessionId = String.valueOf(WebDriverRunner.driver().getSessionId());
             String videoUrl = String.format("%s/%s.mp4", System.getenv("SELENOID_VIDEO"), sessionId);
 
@@ -134,10 +189,9 @@ public class Attachments extends TheInternetHeroKuAppConfiguration {
         }
     }
 
-    private static boolean isCiRun() {
-        return System.getenv("TEAMCITY_VERSION") != null;
-    }
-
+    /**
+     * Классическое решение по добавлению текста в AllureReport
+     */
     @Attachment(value = "{attachmentName}", type = "text/plain")
     public static String attachTextToAllure(String attachmentName, String content) {
         return content;
