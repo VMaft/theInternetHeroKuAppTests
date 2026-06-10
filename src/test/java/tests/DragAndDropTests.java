@@ -16,7 +16,7 @@ public class DragAndDropTests {
 
     @Test
     @DisplayName("Проверка элементов страницы")
-    void disappearingElementsPageShouldBeValid() {
+    void dragAndDropPageShouldBeValid() {
         step("Открываем 'Drag and Drop'", page::open);
         step("Валидируем страницу 'Drag and Drop': ", page::shouldBeValid);
     }
