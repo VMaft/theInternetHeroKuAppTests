@@ -37,5 +37,4 @@ public class DynamicContentTests {
         step("Устанавливаем флаг '?with_content=static':", page::setWithContentStatic);
         step("Проверяем что только один элемент будет обновляться если обновить страницу", page::onlyOnePageElementShouldBeUpdated);
     }
-
 }

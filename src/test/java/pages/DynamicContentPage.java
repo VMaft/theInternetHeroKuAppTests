@@ -71,12 +71,13 @@ public class DynamicContentPage {
         List<String> resultElementsTexts = $("#content .row").$$(".row").texts();
         List<String> difference = new ArrayList<>(originalElementsTexts);
         difference.removeAll(resultElementsTexts);
-        step("Проверяем что изменился только один элемент на странице", ()-> {
+        step("Проверяем что изменился только один элемент на странице", () -> {
             Assertions.assertThat(difference.size()).isEqualTo(1);
         });
 
-        Attachments.attachTextToAllure("Конечный текст элементов", String.join("\n\n", resultElementsTexts));
-
+        step("Сохраняем финальный текст элементов после рефреша страницы", () -> {
+            Attachments.attachTextToAllure("Конечный текст элементов", String.join("\n\n", resultElementsTexts));
+        });
         System.out.println(difference);
         return this;
     }
