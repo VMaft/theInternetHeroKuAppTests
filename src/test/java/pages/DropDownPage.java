@@ -19,7 +19,6 @@ public class DropDownPage {
     final String HEADER_EXPECTED_TEXT = "Dropdown List";
     final SelenideElement HEADER = $("h3");
 
-
     final SelenideElement dropdown = $("#dropdown");
     final SelenideElement option1 = $("#dropdown").find(byText("Option 1"));
     final SelenideElement option2 = $("#dropdown").find(byText("Option 2"));
