@@ -123,7 +123,7 @@ Allure-отчёт превращается в интерактивный сце�
 - [x] Disappearing Elements
 - [x] Drag and Drop
 - [x] Dropdown
-- [ ] Dynamic Content
+- [x] Dynamic Content
 - [ ] Dynamic Controls
 - [ ] ...
 - [ ] Typos
