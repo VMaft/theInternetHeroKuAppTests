@@ -84,17 +84,20 @@ public class DynamicContentPage {
         validateArguments(expectedElementsDifferenceCount, originalElementsTexts.size());
 
         step("Сохраняем текст всех элементов", () -> {
-            Attachments.attachTextToAllure("Начальный текст элементов", String.join("\n\n", originalElementsTexts));
+            Attachments.attachTextToAllure("Начальный текст элементов",
+                    String.join("\n\n", originalElementsTexts));
         });
 
         //Определяем корректный комментарий к шагу
-        String assertionStepComment = getValidAssertionsCommentWith(expectedElementsDifferenceCount, originalElementsTexts.size());
+        String assertionStepComment = getValidAssertionsCommentWith(expectedElementsDifferenceCount
+                , originalElementsTexts.size());
 
         step("Обновляем страницу", this::updateRows);
 
         List<String> resultElementsTexts = $(ROW_CONTAINER_CSS).$$(ROWS_CSS).texts();
         step("Сохраняем текст всех элементов после обновления страницы", () -> {
-            Attachments.attachTextToAllure("Текст элементов после обновления", String.join("\n\n", resultElementsTexts));
+            Attachments.attachTextToAllure("Текст элементов после обновления",
+                    String.join("\n\n", resultElementsTexts));
         });
 
         List<String> difference = new ArrayList<>(resultElementsTexts);
@@ -108,7 +111,8 @@ public class DynamicContentPage {
 
         if (expectedElementsDifferenceCount > 0) {
             step("Сохраняем итоговую разницу в текстах элементов", () -> {
-                Attachments.attachTextToAllure("Текст элементов после обновления", String.join("\n\n", difference));
+                Attachments.attachTextToAllure("Текст элементов после обновления",
+                        String.join("\n\n", difference));
             });
         }
         return this;
@@ -125,8 +129,12 @@ public class DynamicContentPage {
         return result;
     }
 
-    //В зависимости от ожидаемого значения количества измененных элементов, подбираем корректный комментарий для отчетности
-    private static String getValidAssertionsCommentWith(int expectedElementsDifferenceCount, int expectedElementsCount) {
+    //В зависимости от ожидаемого значения количества измененных элементов, подбираем корректный комментарий
+    // для отчетности
+    private static String getValidAssertionsCommentWith(
+            int expectedElementsDifferenceCount,
+            int expectedElementsCount
+    ) {
         String assertionStepComment;
         switch (expectedElementsDifferenceCount) {
             case (0):
@@ -140,7 +148,8 @@ public class DynamicContentPage {
                 if (expectedElementsDifferenceCount == expectedElementsCount) {
                     assertionStepComment = "Проверяем что текст всех элементов страницы обновлен.";
                 } else {
-                    assertionStepComment = "Проверяем что изменился текст только " + expectedElementsDifferenceCount + " элементов на странице";
+                    assertionStepComment = "Проверяем что изменился текст только "
+                            + expectedElementsDifferenceCount + " элементов на странице";
                 }
                 break;
             }

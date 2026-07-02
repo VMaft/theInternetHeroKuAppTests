@@ -10,7 +10,7 @@ import static io.qameta.allure.Allure.step;
 
 @DisplayName("Проверки раздела 'Drag and Drop'")
 @Feature("Проверка отображения и взаимодействия с элементами страницы")
-public class DragAndDropTests {
+public class DragAndDropTests extends BaseTest {
 
     DragAndDropPage page = new DragAndDropPage();
 

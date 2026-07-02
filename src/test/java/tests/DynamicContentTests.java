@@ -10,7 +10,7 @@ import static io.qameta.allure.Allure.step;
 
 @DisplayName("Проверки раздела 'Dynamic Content'")
 @Feature("Проверка отображения и взаимодействия с элементами страницы")
-public class DynamicContentTests {
+public class DynamicContentTests extends BaseTest {
     DynamicContentPage page = new DynamicContentPage();
 
     @Test
