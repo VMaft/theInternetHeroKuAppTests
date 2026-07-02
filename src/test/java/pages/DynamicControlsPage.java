@@ -69,16 +69,6 @@ public class DynamicControlsPage {
         return this;
     }
 
-    @Test
-    void sniffing() {
-        open();
-        sleep(1500);
-        System.out.println(pageReload());
-        Selenide.refresh();
-        sleep(500);
-        System.out.println(pageReload());
-    }
-
     private boolean pageReload() {
         return Boolean.TRUE.equals(Selenide.executeJavaScript(
                 "return window.performance.getEntriesByType('navigation')[0].type == 'reload';"

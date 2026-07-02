@@ -26,7 +26,4 @@ public class DynamicControlsTests extends BaseTest{
         step("Открываем 'Dynamic Controls'", page::open);
         step("Изменяем состояние чек-бокса", page::selectCheckboxAndVerifyState);
     }
-
-
-
 }
