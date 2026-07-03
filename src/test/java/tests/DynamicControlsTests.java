@@ -39,10 +39,10 @@ public class DynamicControlsTests extends BaseTest{
     }
 
     @Disabled("Тест - проверка исправления бага с добавлением и удалением элементов checkbox." +
-            "Причина: ID = checkbox присваивается не div-контейнеру, а элементу input т.е. самому чек-боксу. " +
+            "\nПричина: {id=checkbox} присваивается не div-контейнеру, а элементу input т.е. самому чек-боксу. " +
             "Чисто технически это верно. Однако клавиша Remove удаляет любой элемент формы checkbox-example по " +
-            "id=checkbox. Получается после нажатия на клавишу удаления (ранее добавленного) чек-бокса в DOM остается " +
-            "div с текстом:'A checkbox' что неправильно и засоряет DOM.")
+            "id=checkbox. Получается после удаления input - элемента с {id=checkbox} в DOM остается " +
+            "div с текстом:'A checkbox' что не правильно и засоряет DOM.")
     @Test
     @DisplayName("Чек-бокс может быть добавлен на страницу после удаления")
     void checkboxCanBeAddedAfterRemoving() {
