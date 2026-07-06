@@ -16,44 +16,52 @@ import static org.assertj.core.api.Assertions.*;
 
 public class DynamicControlsPage {
     final String ENDPOINT = "/dynamic_controls";
-    final String CHECKBOX_REMOVED_EXPECTED_TEXT = "It's gone!";
-    final String CHECKBOX_ADDED_EXPECTED_TEXT = "It's back!";
-    final String INPUT_ENABLED_EXPECTED_TEXT = "It's enabled!";
-    final String INPUT_DISABLED_EXPECTED_TEXT = "It's disabled!";
-    final String EXPECTED_CHECKBOX_TEXT = "A checkbox";
-    final String REMOVE_BUTTON_TEXT = "Remove";
-    final String ADD_BUTTON_TEXT = "Add";
-    final String CHECKBOX_FORM_BUTTON_SELECTOR = "#checkbox-example > button";
-
     final String[] EXPECTED_HEADERS_TEXTS = {
             "Dynamic Controls",
             "Remove/add",
             "Enable/disable"
     };
 
-    // Выносим в константу селектор ID формы чекбокса для динамического обновления состояния
-    final String CHECKBOX_FORM_SELECTOR = "#checkbox-example";
-    final String INPUT_FORM_SELECTOR = "#input-example";
+    //State expected notifications texts
+    final String CHECKBOX_REMOVED_EXPECTED_TEXT = "It's gone!";
+    final String CHECKBOX_ADDED_EXPECTED_TEXT = "It's back!";
+    final String INPUT_ENABLED_EXPECTED_TEXT = "It's enabled!";
+    final String INPUT_DISABLED_EXPECTED_TEXT = "It's disabled!";
 
+    // Elements expected texts
+    final String EXPECTED_CHECKBOX_TEXT = "A checkbox";
+    final String REMOVE_BUTTON_TEXT = "Remove";
+    final String ADD_BUTTON_TEXT = "Add";
+
+    // Elements string Selectors
+    final String CHECKBOX_FORM_SELECTOR = "form#checkbox-example";
+    final String INPUT_FORM_SELECTOR = "form#input-example";
+
+    final String CHECKBOX_SELECTOR = "div#checkbox";
     final String INPUT_SELECTOR = "input";
     final String MESSAGE_SELECTOR = "#message";
     final String LOADER_SELECTOR = "#loading";
     final String BUTTONS_SELECTOR = "button";
 
+    final String CHECKBOX_FORM_BUTTON_SELECTOR = CHECKBOX_FORM_SELECTOR + ">" + BUTTONS_SELECTOR;
+    final String INPUT_FORM_BUTTON_SELECTOR = INPUT_FORM_SELECTOR + ">" + BUTTONS_SELECTOR;
+
+    final String CHECKBOX_FORM_LOADER_SELECTOR = CHECKBOX_FORM_SELECTOR + ">" + LOADER_SELECTOR;
+    final String INPUT_FORM_LOADER_SELECTOR = INPUT_FORM_SELECTOR + ">" + LOADER_SELECTOR;
+
+    final String CHECKBOX_FORM_MESSAGE_SELECTOR = CHECKBOX_FORM_SELECTOR + ">" + MESSAGE_SELECTOR;
+    final String INPUT_FORM_MESSAGE_SELECTOR = INPUT_FORM_SELECTOR + ">" + MESSAGE_SELECTOR;
+
+
+
 
     final ElementsCollection pageHeaders = $$("#content h4");
 
     // Находим div у которого точно будет id = checkbox
-    final SelenideElement checkboxElement = $("div#checkbox");
-    final SelenideElement inputField = $("form#input-example > input");
+    final SelenideElement checkboxElement = $(CHECKBOX_SELECTOR);
+    final SelenideElement inputField = $(INPUT_FORM_SELECTOR + ">" + INPUT_SELECTOR);
 
     final ElementsCollection buttons = $$("button");
-
-
-    final SelenideElement checkboxFormButton = $(CHECKBOX_FORM_BUTTON_SELECTOR);
-    //final SelenideElement removeCheckboxButton = $(CHECKBOX_FORM_BUTTON_SELECTOR).$(Selectors.byText(REMOVE_BUTTON_TEXT));
-    final SelenideElement addCheckboxButton = $(CHECKBOX_FORM_BUTTON_SELECTOR).$(withText(ADD_BUTTON_TEXT));
-
 
     final SelenideElement loading = $(LOADER_SELECTOR);
 
@@ -92,36 +100,28 @@ public class DynamicControlsPage {
 
     @Step("Нажимаем клавишу удаления чек-бокса")
     public DynamicControlsPage clickRemoveCheckboxButton(){
-        $(byText(REMOVE_BUTTON_TEXT)).click();
+        clickButtonBySelectorAndText(CHECKBOX_FORM_SELECTOR, REMOVE_BUTTON_TEXT);
         return this;
     }
 
     @Step("Нажимаем клавишу добавления чек-бокса")
     public DynamicControlsPage clickAddCheckboxButton(){
-        $(byText(ADD_BUTTON_TEXT)).click();
-        $(MESSAGE_SELECTOR).shouldHave(text(CHECKBOX_ADDED_EXPECTED_TEXT));
-        $(CHECKBOX_FORM_BUTTON_SELECTOR).shouldHave(text(REMOVE_BUTTON_TEXT));
-        checkboxElement.shouldBe(exist);
+        clickButtonBySelectorAndText(CHECKBOX_FORM_SELECTOR, ADD_BUTTON_TEXT);
+        loaderInCheckboxFormShouldAppear();
         return this;
     }
 
-    @Step("Проверяем что лоадер появился на странице в единственном экземпляре")
-    public DynamicControlsPage loaderShouldAppear() {
-        validateThatLoaderFrom(CHECKBOX_FORM_SELECTOR, appear);
-        // Только один элемент лоадера на всю страницу
-        $$(LOADER_SELECTOR).shouldBe(size(1));
-        return this;
-    }
-
-    // После загрузки, лоадер остается в DOM, но становится невидимым (hidden) - приемлемое поведение
-    @Step("Проверяем что лоадер исчез спустя время")
-    public DynamicControlsPage checkboxLoaderShouldDisappear() {
-        validateThatLoaderFrom(CHECKBOX_FORM_SELECTOR, hidden);
+    @Step("Проверяем что чек-бокс удален со страницы")
+    public DynamicControlsPage verifyCheckboxRemoved(){
+        loaderInCheckboxFormShouldBeHidden();
+        verifyStatusMessageIsAppear(CHECKBOX_FORM_MESSAGE_SELECTOR, CHECKBOX_REMOVED_EXPECTED_TEXT);
+        verifyElementHasExactText(CHECKBOX_FORM_BUTTON_SELECTOR, ADD_BUTTON_TEXT);
+        verifyThatElementIsInCondition(CHECKBOX_SELECTOR, not(exist));
         return this;
     }
 
     @Step("Проверяем что чек-бокс отображается на странице")
-    public DynamicControlsPage validateCheckboxAppearAndValid(){
+    public DynamicControlsPage verifyCheckboxAppearAndValid(){
         checkboxElement.shouldBe(visible, exist);
         Assertions.assertThat(checkboxElement.text()).isEqualTo(EXPECTED_CHECKBOX_TEXT);
 
@@ -130,9 +130,25 @@ public class DynamicControlsPage {
         return this;
     }
 
-    @Step("Проверяем что чек-бокс удален")
-    public DynamicControlsPage validateCheckboxRemovedAfterLoading(){
-        validateButtonTextAndCheckboxStateIs(ADD_BUTTON_TEXT, not(exist));
+    @Step("Проверяем что лоадер появился на странице в единственном экземпляре")
+    public DynamicControlsPage loaderInCheckboxFormShouldAppear() {
+        verifyThatElementIsInCondition(CHECKBOX_FORM_LOADER_SELECTOR, appear);
+        // Только один элемент лоадера на всю страницу
+        $$(LOADER_SELECTOR).shouldBe(size(1));
+        return this;
+    }
+
+    // После загрузки, лоадер остается в DOM, но становится невидимым (hidden) - приемлемое поведение
+    @Step("Проверяем что лоадер скрыт")
+    public DynamicControlsPage loaderInCheckboxFormShouldBeHidden() {
+        verifyThatElementIsInCondition(CHECKBOX_FORM_LOADER_SELECTOR, hidden);
+        return this;
+    }
+
+    @Step("Проверяем появление сообщения с текстом {1}")
+    public DynamicControlsPage verifyStatusMessageIsAppear(String elementSelector, String expectedText){
+        verifyThatElementIsInCondition(elementSelector, appear);
+        verifyElementHasExactText(elementSelector, expectedText);
         return this;
     }
 
@@ -142,19 +158,27 @@ public class DynamicControlsPage {
         return this;
     }
 
-    private boolean pageReload() {
+    private boolean pageWasReload() {
         return Boolean.TRUE.equals(Selenide.executeJavaScript(
                 "return window.performance.getEntriesByType('navigation')[0].type == 'reload';"
         ));
     }
 
-    private void validateButtonTextAndCheckboxStateIs(String expectedButtonText, WebElementCondition expectedCondition){
-        checkboxLoaderShouldDisappear();
-        checkboxElement.shouldBe(expectedCondition);
-        assertThat($(CHECKBOX_FORM_BUTTON_SELECTOR).text()).isEqualTo(expectedButtonText);
+    //Поведение клавиш на странице идентично, поэтому используется единый параметризованный метод
+    private void clickButtonBySelectorAndText(String formSelector, String buttonText){
+        $(formSelector).$(withText(buttonText)).click();
     }
 
-    private void validateThatLoaderFrom(String formSelector, WebElementCondition expectedCondition){
-        $(formSelector).$(LOADER_SELECTOR).shouldBe(expectedCondition);
+    private void validateButtonTextAndCheckboxStateIs(String expectedButtonText, WebElementCondition expectedCondition){
+        loaderInCheckboxFormShouldBeHidden();
+        checkboxElement.shouldBe(expectedCondition);
+    }
+
+    private void verifyThatElementIsInCondition(String selector, WebElementCondition...conditions){
+        $(selector).shouldBe(conditions);
+    }
+
+    private void verifyElementHasExactText(String selector, String text){
+        $(selector).shouldHave(exactText(text));
     }
 }
