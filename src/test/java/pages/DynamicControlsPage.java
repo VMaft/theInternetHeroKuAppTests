@@ -196,7 +196,6 @@ public class DynamicControlsPage {
         return this;
     }
 
-    @Step("Проверяем что лоадер в единственном экземпляре и {condition}")
     public DynamicControlsPage verifyThatLoaderIsSingle() {
         verifyThatLoaderCountIs(1);
         return this;
@@ -204,7 +203,7 @@ public class DynamicControlsPage {
 
     // Метод на будущее, в случае теоретической правки, предусмотрена возможность проверки допустимого количества
     // лоадеров на странице
-    @Step("Проверяем что лоадер в единственном экземпляре и {condition}")
+    @Step("Проверяем что на всей странице лоадеров не больше чем: {loadersExpectedCount} .")
     public DynamicControlsPage verifyThatLoaderCountIs(int loadersExpectedCount) {
         $$(LOADER_SELECTOR).shouldBe(size(loadersExpectedCount));
         return this;

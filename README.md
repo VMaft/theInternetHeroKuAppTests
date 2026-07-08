@@ -5,9 +5,6 @@
 [![JUnit5](https://img.shields.io/badge/JUnit5-5.10.0-25A162?logo=junit5)](https://junit.org/junit5/)
 [![Allure](https://img.shields.io/badge/Allure-2.27.0-1C8B9C?logo=allure)](https://allurereport.org/)
 
-## О проекте
-
-Этот репозиторий — демонстрация подхода к **промышленной автоматизации UI-тестирования** на примере классического приложения [The Internet HeroKuApp](https://the-internet.herokuapp.com/). Здесь нет «игрушечных» тестов — только практики, которые реально работают на крупных проектах.
 
 ## О проекте
 
@@ -50,6 +47,9 @@
 ```
 
 Allure-отчёт превращается в интерактивный сценарий, понятный даже нетехническому члену команды.
+#### Пример AllureReport последней мастер сборки можно посмотреть по ссылке: 
+https://vmaft.github.io/theInternetHeroKuAppTests/ 
+
 
 ### 2. Page Object + Selenide-стиль
 
@@ -65,7 +65,7 @@ Allure-отчёт превращается в интерактивный сце�
 
 Настроены:
 - Запуск в контейнерах (Selenoid)
-- Генерация Allure-отчётов
+- Генерация Allure-отчётов (локально, в локальном TeamCity и удаленном GitHub Pages)
 - Поддержка параллельного запуска тестов
 
 ---
