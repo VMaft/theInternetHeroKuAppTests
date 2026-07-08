@@ -124,7 +124,12 @@ Allure-отчёт превращается в интерактивный сце�
 - [x] Drag and Drop
 - [x] Dropdown
 - [x] Dynamic Content
-- [ ] Dynamic Controls
+- [x] Dynamic Controls
+- [ ] Dynamic Loading
+- [ ] Entry Ad
+- [ ] Exit Intent
+- [ ] File Download
+- [ ] File Upload
 - [ ] ...
 - [ ] Typos
 - [ ] WYSIWYG Editor
