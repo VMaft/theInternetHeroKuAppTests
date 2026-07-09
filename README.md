@@ -5,9 +5,6 @@
 [![JUnit5](https://img.shields.io/badge/JUnit5-5.10.0-25A162?logo=junit5)](https://junit.org/junit5/)
 [![Allure](https://img.shields.io/badge/Allure-2.27.0-1C8B9C?logo=allure)](https://allurereport.org/)
 
-## О проекте
-
-Этот репозиторий — демонстрация подхода к **промышленной автоматизации UI-тестирования** на примере классического приложения [The Internet HeroKuApp](https://the-internet.herokuapp.com/). Здесь нет «игрушечных» тестов — только практики, которые реально работают на крупных проектах.
 
 ## О проекте
 
@@ -65,8 +62,14 @@ Allure-отчёт превращается в интерактивный сце�
 
 Настроены:
 - Запуск в контейнерах (Selenoid)
-- Генерация Allure-отчётов
+- Генерация Allure-отчётов (локально, в локальном TeamCity и удаленном GitHub Pages)
 - Поддержка параллельного запуска тестов
+
+
+### 4. Подробный и понятный Allure-отчет:
+![img.png](img.png)
+
+Живой пример отчета собранный в Github Pages: https://vmaft.github.io/theInternetHeroKuAppTests/
 
 ---
 
@@ -124,7 +127,12 @@ Allure-отчёт превращается в интерактивный сце�
 - [x] Drag and Drop
 - [x] Dropdown
 - [x] Dynamic Content
-- [ ] Dynamic Controls
+- [x] Dynamic Controls
+- [ ] Dynamic Loading
+- [ ] Entry Ad
+- [ ] Exit Intent
+- [ ] File Download
+- [ ] File Upload
 - [ ] ...
 - [ ] Typos
 - [ ] WYSIWYG Editor
