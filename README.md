@@ -47,9 +47,6 @@
 ```
 
 Allure-отчёт превращается в интерактивный сценарий, понятный даже нетехническому члену команды.
-#### Пример AllureReport последней мастер сборки можно посмотреть по ссылке: 
-https://vmaft.github.io/theInternetHeroKuAppTests/ 
-
 
 ### 2. Page Object + Selenide-стиль
 
@@ -67,6 +64,12 @@ https://vmaft.github.io/theInternetHeroKuAppTests/
 - Запуск в контейнерах (Selenoid)
 - Генерация Allure-отчётов (локально, в локальном TeamCity и удаленном GitHub Pages)
 - Поддержка параллельного запуска тестов
+
+
+### 4. Подробный и понятный Allure-отчет:
+![img.png](img.png)
+
+Живой пример отчета собранный в Github Pages: https://vmaft.github.io/theInternetHeroKuAppTests/
 
 ---
 
