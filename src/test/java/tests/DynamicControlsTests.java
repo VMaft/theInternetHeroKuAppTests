@@ -38,11 +38,11 @@ public class DynamicControlsTests extends BaseTest{
         step("Проверяем что чек-бокс удален", page::verifyCheckboxIsRemoved);
     }
 
-//    @Disabled("Тест - проверка исправления бага с добавлением и удалением элементов checkbox." +
-//            "\n\nПричина: {id=checkbox} присваивается не div-контейнеру, а элементу input т.е. самому чек-боксу. " +
-//            "Чисто технически это верно. Однако клавиша Remove удаляет любой элемент формы checkbox-example c " +
-//            "{id=checkbox}. Получается после удаления input элемента чек-бокса с {id=checkbox} в DOM остается " +
-//            "div с текстом: 'A checkbox'. Что не правильно и засоряет DOM.")
+    @Disabled("Тест - проверка исправления бага с добавлением и удалением элементов checkbox." +
+            "\n\nПричина: {id=checkbox} присваивается не div-контейнеру, а элементу input т.е. самому чек-боксу. " +
+            "Чисто технически это верно. Однако клавиша Remove удаляет любой элемент формы checkbox-example c " +
+            "{id=checkbox}. Получается после удаления input элемента чек-бокса с {id=checkbox} в DOM остается " +
+            "div с текстом: 'A checkbox'. Что не правильно и засоряет DOM.")
     @Test
     @DisplayName("Чек-бокс может быть добавлен на страницу после удаления и без перезагрузки страницы")
     void checkboxCanBeAddedAfterRemoving() {
